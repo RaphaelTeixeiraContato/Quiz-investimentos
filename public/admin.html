@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz de Investimentos – Editor de perguntas</title>
+  <meta name="description" content="Crie, edite e organize as perguntas do quiz ao vivo sobre investimentos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+  <div class="bg"><i></i><i></i><i></i></div>
+
+  <!-- LOGIN -->
+  <section class="gate" id="gate">
+    <form class="card gate-card" id="gate-form">
+      <div class="brand-header">
+        <img src="/favicon.ico" alt="Be Invest" class="be-logo">
+        <span class="be-title">Be Invest</span>
+      </div>
+      <h2 class="sub-title">Quiz sobre investimentos</h2>
+      <p class="muted">Digite a senha do editor de perguntas.</p>
+      <input id="password" type="password" placeholder="Senha (beeditar)" autocomplete="current-password">
+      <p class="error hidden" id="gate-error"></p>
+      <button class="btn" type="submit">Entrar no editor</button>
+      <a href="/" class="btn-back-menu" title="Voltar para a escolha de Jogador ou Apresentador">Voltar ao menu principal</a>
+    </form>
+  </section>
+
+  <!-- EDITOR -->
+  <div class="wrap hidden" id="editor">
+    <header class="bar card">
+      <!-- Linha 1: Marca no canto esquerdo, Filtro das Provas no canto direito -->
+      <div class="bar-row top-row">
+        <div class="brand-row">
+          <img src="/favicon.ico" alt="Be Invest" class="be-logo-sm">
+          <span class="brand-title">Be Invest</span>
+          <span class="brand-divider">|</span>
+          <span class="sub-tag">Editor de Perguntas</span>
+        </div>
+        <div class="quiz-select-wrap" id="admin-quiz-dd-wrap"></div>
+      </div>
+
+      <!-- Linha 2: Prova ativa (nome editável) no canto esquerdo, Tempo e Perguntas no canto direito -->
+      <div class="bar-row mid-row">
+        <div class="active-quiz-group">
+          <label for="quiz-title-input" class="qm-label">PROVA ATIVA:</label>
+          <input id="quiz-title-input" class="quiz-title-input" type="text" placeholder="Nome da prova (ex.: Prova 1 - Turma A)" title="Nome da prova">
+          <button class="btn ghost icon-pill-btn" id="btn-new-quiz" type="button">➕ Criar Nova Prova</button>
+          <button class="btn ghost icon-pill-btn danger-btn" id="btn-del-quiz" type="button">🗑️ Excluir Prova</button>
+        </div>
+        <div class="summary-pill" id="summary"></div>
+      </div>
+
+      <!-- Linha 3: Botões de Ação Restaurar (Azul) e Salvar Configurações (Verde) -->
+      <div class="bar-row bottom-row">
+        <button class="btn btn-reset-blue" id="btn-reset" type="button" disabled title="Restaurar as configurações salvas desta prova">↺ Restaurar</button>
+        <button class="btn btn-save-green" id="btn-save" type="button" disabled title="Salvar as alterações atuais como novo padrão">💾 Salvar configurações</button>
+      </div>
+    </header>
+
+    <div id="list"></div>
+
+    <div class="add-row">
+      <button class="btn violet big-add" id="btn-add" type="button">＋ Adicionar Pergunta</button>
+    </div>
+  </div>
+
+  <script src="/common.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>

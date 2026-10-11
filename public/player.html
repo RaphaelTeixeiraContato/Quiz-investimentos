@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#05030a">
+  <meta name="color-scheme" content="dark">
+  <title>Quiz de Investimentos – Entrar</title>
+  <meta name="description"
+    content="Entre no quiz ao vivo sobre investimentos: digite o PIN e seu apelido e dispute com a turma!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="/player.css">
+</head>
+
+<body>
+  <div class="bg"><i></i><i></i><i></i></div>
+
+  <header class="player-top hidden" id="player-top">
+    <div class="brand">
+      <img src="/favicon.ico" class="be-logo-sm" alt="Be Invest">
+      <span class="brand-name">Be Invest</span>
+      <span class="brand-divider">|</span>
+      <span class="sub-tag">Quiz sobre investimentos</span>
+    </div>
+
+    <!-- Campo de Apelido no Centro do Cabeçalho (Quadrado Vermelho) -->
+    <div class="header-nick-card" id="header-nick-card">
+      <form id="nick-edit-form" class="header-nick-form">
+        <label for="lobby-nick-input" class="header-nick-label">Apelido</label>
+        <div class="header-nick-input-wrap">
+          <input id="lobby-nick-input" maxlength="16" placeholder="Seu apelido" autocomplete="off"
+            class="header-nick-input">
+          <button id="btn-save-nick" class="btn-save-nick-sm" type="submit">Salvar</button>
+        </div>
+      </form>
+      <p id="lobby-nick-error" class="error hidden"></p>
+    </div>
+  </header>
+
+  <div class="tools hidden">
+    <div class="sound-control" id="sound-control" title="Controle de Áudio">
+      <button class="sound-btn" id="btn-mute" aria-label="Ligar/desligar som">
+        <svg id="sound-icon" viewBox="0 0 24 24">
+          <path
+            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+        </svg>
+      </button>
+      <div class="sound-expandable">
+        <input type="range" id="vol-slider" class="vol-slider" min="0" max="1" step="0.01" value="0.8"
+          title="Volume do som">
+        <span id="vol-val" class="vol-val">80%</span>
+      </div>
+    </div>
+    <button class="icon-btn" id="btn-leave-anywhere" title="Sair da partida" aria-label="Sair da partida">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+    </button>
+    <button class="icon-btn" id="btn-full" title="Tela cheia (F)" aria-label="Tela cheia">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+      </svg>
+    </button>
+  </div>
+
+  <main id="app">
+
+    <!-- ENTRAR -->
+    <section class="screen" id="s-join">
+      <div class="hero-brand">
+        <img src="/favicon.ico" class="main-logo" alt="Be Invest Logo">
+        <h1 class="brand-name">Be Invest</h1>
+        <div class="sub-tag">Quiz sobre investimentos</div>
+      </div>
+
+      <form id="join-form" class="card form player-login-card" autocomplete="off">
+        <label for="pin">Senha da sala</label>
+        <input id="pin" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off">
+        <label for="nick">Seu apelido</label>
+        <input id="nick" maxlength="16" autocomplete="off">
+        <p id="join-error" class="error hidden"></p>
+        <button id="join-btn" class="btn" type="submit">Entrar no jogo</button>
+      </form>
+      <div class="login-footer-actions">
+        <a href="/" class="btn-back-menu" title="Voltar para a escolha de Jogador ou Apresentador">Voltar ao menu
+          principal</a>
+      </div>
+    </section>
+
+    <!-- SALA DE ESPERA (Ampliada em 100% da tela - Quadrado Verde) -->
+    <section class="screen hidden" id="s-lobby">
+      <div class="card players-card player-lobby-card">
+        <div class="players-head">
+          <div class="players-title-group">
+            <div>
+              <h2>Sala de Espera</h2>
+            </div>
+          </div>
+          <div class="counter-badge">
+            <span class="cb-label">Jogadores</span>
+            <span class="count" id="player-lobby-count">0</span>
+          </div>
+        </div>
+        <div class="players-frame">
+          <div class="chips" id="player-lobby-chips"></div>
+        </div>
+      </div>
+      <footer class="controls" id="player-controls">
+        <button id="btn-leave-lobby" class="btn big" type="button">Sair da sala</button>
+      </footer>
+    </section>
+
+    <!-- PREPARE-SE -->
+    <section class="screen hidden" id="s-ready">
+      <h2>Prepare-se!</h2>
+      <div class="eyes-loader">
+        <div class="eye">
+          <div class="pupil"></div>
+        </div>
+        <div class="eye">
+          <div class="pupil"></div>
+        </div>
+      </div>
+      <p class="sub">Olhe para o telão</p>
+    </section>
+
+    <!-- RESPONDER -->
+    <section class="screen hidden" id="s-question">
+      <div class="timer">
+        <div class="timer-bar" id="timer-bar"></div>
+      </div>
+      <div class="answers" id="answers"></div>
+    </section>
+
+    <!-- SALA DE ESPERA PÓS-RESPOSTA -->
+    <section class="screen hidden" id="s-answered">
+      <div class="waiting-lounge-wrapper">
+
+        <!-- Card Unificado: Resposta + Progresso + Olhe para o Telão -->
+        <div class="waiting-card unified-answer-card">
+          <!-- 1. Status e Resposta Registrada -->
+          <div class="waiting-header-centered">
+            <div class="waiting-status-pill">
+              <span class="wsp-icon">✅</span>
+              <span class="wsp-text">Resposta Registrada!</span>
+            </div>
+            <div class="waiting-choice-badge" id="waiting-choice-badge"></div>
+          </div>
+
+          <!-- 2. Progresso da Rodada -->
+          <div class="waiting-progress-box">
+            <div class="wpb-head">
+              <span class="wpb-title">Progresso da Rodada</span>
+            </div>
+            <div class="wpb-bar-track">
+              <div class="wpb-bar-fill" id="waiting-bar-fill" style="width: 20%;"></div>
+            </div>
+            <div class="wpb-status" id="waiting-status-msg">
+              Aguardando todos os investidores responderem...
+            </div>
+          </div>
+
+          <!-- 3. Olhe para o Telão (No mesmo card) -->
+          <div class="screen-alert-inner">
+            <div class="wsa-big-icon">📺</div>
+            <div class="wsa-title">Olhe para o Telão!</div>
+            <p class="wsa-sub">Fique de olho no <strong>telão</strong> para conferir o resultado e a explicação assim
+              que todos responderem.</p>
+          </div>
+        </div>
+
+        <!-- Dica do Investidor (Card separado abaixo com o mesmo fundo padrão) -->
+        <div class="waiting-card investor-tip-card">
+          <div class="wtb-header">
+            <span class="wtb-icon">💡</span>
+            <span class="wtb-title">Dica do Investidor</span>
+          </div>
+          <div class="wtb-content" id="waiting-tip-text"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RESULTADO / REVELAÇÃO NO TELÃO -->
+    <section class="screen hidden" id="s-result">
+      <div class="waiting-lounge-wrapper">
+
+        <!-- Card Unificado: Resposta Computada + Resultado no Telão -->
+        <div class="waiting-card unified-answer-card">
+          <!-- 1. Status e Resposta -->
+          <div class="waiting-header-centered">
+            <div class="waiting-status-pill done-pill" id="result-status-pill">
+              <span class="wsp-icon" id="res-icon">⏱️</span>
+              <span class="wsp-text" id="res-title">Resposta Computada!</span>
+            </div>
+            <div class="waiting-choice-badge" id="result-choice-badge"></div>
+          </div>
+
+          <!-- 2. Resultado no Telão (No mesmo card) -->
+          <div class="screen-alert-inner">
+            <div class="wsa-big-icon">📺</div>
+            <div class="wsa-title">Resultado no Telão!</div>
+            <p class="wsa-sub">Confira no telão a resposta correta, a explicação do professor e a classificação desta
+              rodada.</p>
+          </div>
+        </div>
+
+        <!-- Dica do Investidor (Card separado abaixo com o mesmo fundo padrão) -->
+        <div class="waiting-card investor-tip-card">
+          <div class="wtb-header">
+            <span class="wtb-icon">💡</span>
+            <span class="wtb-title">Dica do Investidor</span>
+          </div>
+          <div class="wtb-content" id="result-tip-text"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PÓDIO -->
+    <section class="screen hidden" id="s-podium">
+      <div class="big-emoji" id="pod-emoji">🏆</div>
+      <h2 id="pod-title"></h2>
+      <div class="points" id="pod-score"></div>
+    </section>
+
+    <!-- EXPULSO / ERRO -->
+    <section class="screen hidden" id="s-kicked">
+      <div class="big-emoji">🚪</div>
+      <h2>Você saiu da partida</h2>
+      <button class="btn ghost" onclick="location.href='/'">Voltar ao início</button>
+    </section>
+  </main>
+
+  <div class="conn hidden" id="conn">Reconectando…</div>
+  <div class="hud hidden" id="hud"><span id="hud-name"></span><span id="hud-score"></span></div>
+
+  <script src="/common.js"></script>
+  <!-- Modal Customizado de Saída -->
+  <div class="modal hidden" id="leave-modal">
+    <div class="modal-content">
+      <h3>Sair da sala</h3>
+      <p>Tem certeza que deseja sair da partida?</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="btn-cancel-leave">Cancelar</button>
+        <button class="btn-danger" id="btn-confirm-leave">Sair da partida</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/player.js"></script>
+</body>
+
+</html>

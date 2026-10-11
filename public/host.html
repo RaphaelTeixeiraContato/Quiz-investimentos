@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Quiz de Investimentos – Apresentador</title>
+  <meta name="description"
+    content="Painel do apresentador do quiz ao vivo sobre investimentos: PIN, QR Code, perguntas, ranking e pódio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="/host.css">
+</head>
+
+<body class="host">
+  <div class="bg"><i></i><i></i><i></i></div>
+  <canvas id="confetti"></canvas>
+
+  <header class="top hidden">
+    <div class="brand">
+      <img src="/favicon.ico" class="be-logo-sm" alt="Be Invest">
+      <span class="brand-name">Be Invest</span>
+      <span class="brand-divider">|</span>
+      <span class="sub-tag">Quiz sobre investimentos</span>
+    </div>
+
+    <!-- Elementos Centrais (Filtro) -->
+    <div class="header-center-wrap">
+      <div class="header-quiz-wrap" id="header-quiz-wrap"></div>
+      <div class="joinpill hidden" id="joinpill"><span id="jp-url"></span><b id="jp-pin"></b></div>
+    </div>
+
+    <div class="tools">
+      <span class="progress hidden" id="progress"></span>
+      <button class="btn-bot" id="btn-add-bot" type="button"
+        title="Adicionar bot de teste (ou aperte a tecla 1 no teclado)">🤖 +1 Bot <kbd>1</kbd></button>
+      <div class="sound-control" id="sound-control" title="Controle de Áudio">
+        <button class="sound-btn" id="btn-mute" aria-label="Ligar/desligar som">
+          <svg id="sound-icon" viewBox="0 0 24 24">
+            <path
+              d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+          </svg>
+        </button>
+        <div class="sound-expandable">
+          <input type="range" id="vol-slider" class="vol-slider" min="0" max="1" step="0.01" value="0.8"
+            title="Volume do som">
+          <span id="vol-val" class="vol-val">80%</span>
+        </div>
+      </div>
+      <button class="icon-btn" id="btn-full" title="Tela cheia (F)" aria-label="Tela cheia">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- LOGIN -->
+    <section class="screen" id="h-login">
+      <div class="host-login-wrapper">
+        <div class="hero-brand">
+          <img src="/favicon.ico" class="main-logo" alt="Be Invest Logo">
+          <h1 class="brand-name">Be Invest</h1>
+          <div class="sub-tag">Quiz sobre investimentos</div>
+        </div>
+
+        <div class="host-login-grid">
+          <!-- CARD 1: Apresentador (Criar partida) -->
+          <form class="card host-login-card" id="login-form">
+            <h3>Criar partida</h3>
+            <label for="password">Senha</label>
+            <input id="password" autocomplete="current-password">
+            <p id="login-error" class="error hidden"></p>
+            <button class="btn" id="login-btn" type="submit">Criar partida</button>
+          </form>
+
+          <!-- CARD 2: Editor de Provas e Perguntas -->
+          <form class="card host-login-card" id="admin-login-form">
+            <h3>Editar perguntas</h3>
+            <label for="admin-password">Senha</label>
+            <input id="admin-password" autocomplete="current-password">
+            <p id="admin-login-error" class="error hidden"></p>
+            <button class="btn btn-editor" id="admin-login-btn" type="submit">Acessar editor</button>
+          </form>
+        </div>
+
+        <div class="login-footer-actions">
+          <a href="/" class="btn-back-menu" title="Voltar para a escolha de Jogador ou Apresentador">Voltar ao menu
+            principal</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOBBY -->
+    <section class="screen hidden" id="h-lobby">
+      <div class="card players-card host-lobby-full">
+        <div class="players-head" style="position: relative;">
+          <div class="players-title-group">
+            <h2>Sala de Espera</h2>
+          </div>
+          <!-- Senha da Sala Posicionada no Centro do Card -->
+          <div class="header-pin-pill-lobby" id="header-pin-pill"
+            style="position: absolute; left: 50%; transform: translateX(-50%);">
+            <span class="hpp-label">SENHA DA SALA</span>
+            <span class="hpp-pin" id="header-pin">------</span>
+          </div>
+          <div class="counter-badge">
+            <span class="cb-label">Jogadores</span>
+            <span class="count" id="lobby-count">0</span>
+          </div>
+        </div>
+        <div class="players-frame">
+          <div class="chips" id="lobby-players"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREPARE-SE -->
+    <section class="screen hidden" id="h-ready">
+      <p class="eyebrow big" id="ready-count"></p>
+      <h2 class="ready-q" id="ready-q"></h2>
+      <div class="ready-timer-circle" id="ready-timer-circle">5</div>
+    </section>
+
+    <!-- PERGUNTA -->
+    <section class="screen hidden" id="h-question">
+      <div class="q-card card">
+        <h2 id="q-text"></h2>
+      </div>
+      <div class="q-mid">
+        <div class="ring-wrapper">
+          <div class="ring"><svg viewBox="0 0 100 100">
+              <circle class="ring-bg" cx="50" cy="50" r="44" />
+              <circle class="ring-fg" id="ring-fg" cx="50" cy="50" r="44" />
+            </svg>
+            <div class="ring-content">
+              <span id="ring-num"></span>
+            </div>
+          </div>
+          <div class="ring-ans" title="Alunos que já responderam"><b id="ans-count">0/1</b></div>
+        </div>
+      </div>
+      <div class="opts" id="q-opts"></div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="screen hidden" id="h-reveal">
+      <div class="reveal-grid">
+        <div class="left">
+          <div class="opts compact" id="r-opts"></div>
+          <div class="card combined-expl">
+            <h2 id="r-text" class="expl-q"></h2>
+            <div class="expl" id="r-expl"></div>
+          </div>
+        </div>
+        <div class="card board">
+          <div class="board-header">
+            <h3>🏆 Ranking 🏆</h3>
+          </div>
+          <div class="board-table-wrap">
+            <ol class="board-list" id="r-board"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÓDIO -->
+    <section class="screen hidden" id="h-podium">
+      <h1 class="pod-title">🏆 Pódio final 🏆</h1>
+      <div class="podium" id="podium"></div>
+
+      <!-- Tabela completa dos demais participantes -->
+      <div class="podium-rest-card card" id="podium-rest-card">
+        <div class="rest-card-header">
+          <h4>Classificação Geral</h4>
+        </div>
+        <div class="rest-table-head">
+          <span class="rth-pos">Posição</span>
+          <span class="rth-name">Jogador</span>
+          <span class="rth-score">Pontuação</span>
+        </div>
+        <div class="rest-table-body" id="podium-rest"></div>
+      </div>
+
+      <!-- Botão Voltar ao Início no final da página -->
+      <div class="podium-actions">
+        <button class="btn big btn-return-lobby" id="btn-podium-restart" type="button">
+          Voltar ao início
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls hidden" id="controls">
+    <button class="btn big" id="ctrl-btn"></button>
+  </footer>
+
+  <div class="conn hidden" id="conn">Reconectando…</div>
+
+  <script src="/vendor/qrcode.js"></script>
+  <script src="/common.js"></script>
+  <script src="/host.js"></script>
+</body>
+
+</html>
