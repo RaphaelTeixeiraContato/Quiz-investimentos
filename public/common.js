@@ -65,7 +65,26 @@ const sfx = (() => {
     return ctx;
   }
 
-  function tone(freq, start, dur, type = 'sine', baseVol = 0.2, endFreq = null) {
+  let keepAliveNode = null;
+  let activeOscs = [];
+
+  function startKeepAlive(c) {
+    if (keepAliveNode || !c) return;
+    try {
+      // Infrasom a 10Hz com ganho 0.00001 (inaudível) mantém o pipeline de áudio ativo no iOS Safari e PC
+      const osc = c.createOscillator();
+      const gain = c.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 10;
+      gain.gain.value = 0.00001;
+      osc.connect(gain);
+      gain.connect(c.destination);
+      osc.start(0);
+      keepAliveNode = osc;
+    } catch (_) {}
+  }
+
+  function tone(freq, start, dur, type = 'sine', baseVol = 0.22, endFreq = null) {
     const c = ac();
     if (!c || muted || volume <= 0) return;
     try {
@@ -87,7 +106,20 @@ const sfx = (() => {
       g.connect(c.destination);
       o.start(t);
       o.stop(t + dur + 0.05);
+
+      activeOscs.push(o);
+      o.onended = () => {
+        const idx = activeOscs.indexOf(o);
+        if (idx !== -1) activeOscs.splice(idx, 1);
+      };
     } catch (_) {}
+  }
+
+  function stopAll() {
+    activeOscs.forEach(o => {
+      try { o.stop(); o.disconnect(); } catch (_) {}
+    });
+    activeOscs = [];
   }
 
   return {
@@ -101,6 +133,7 @@ const sfx = (() => {
           src.buffer = buf;
           src.connect(c.destination);
           src.start(0);
+          startKeepAlive(c);
         } catch (_) {}
       }
     },
@@ -120,10 +153,16 @@ const sfx = (() => {
       localStorage.setItem('quiz-muted', muted ? '1' : '0');
       return muted;
     },
-    // Clique de seleção de alternativa
+    // Boas-vindas ao entrar na sala (confirma que o som está funcionando no aparelho)
+    welcome() {
+      tone(523.25, 0, 0.12, 'triangle', 0.22);
+      tone(659.25, 0.1, 0.12, 'triangle', 0.24);
+      tone(783.99, 0.2, 0.28, 'sine', 0.28);
+    },
+    // Clique nítido e tátil de seleção de alternativa
     tap() {
-      tone(440, 0, 0.04, 'sine', 0.2);
-      tone(880, 0.02, 0.07, 'triangle', 0.18);
+      tone(520, 0, 0.07, 'sine', 0.28);
+      tone(880, 0.03, 0.1, 'triangle', 0.24);
     },
     // Aluno entra na sala de espera (som para o telão do apresentador)
     join() {
@@ -131,11 +170,31 @@ const sfx = (() => {
       tone(880, 0.1, 0.35, 'sine', 0.28);
       tone(1760, 0.1, 0.2, 'sine', 0.08);
     },
-    // Contagem regressiva da tela de "Prepare-se" (5, 4, 3, 2, 1)
+    // Agenda com precisão absoluta de hardware do WebAudio a contagem regressiva 5, 4, 3, 2, 1
+    scheduleReadyCountdown() {
+      stopAll();
+      const c = ac();
+      if (!c || muted || volume <= 0) return;
+      // 5: agora (com folga mínima de 0.02s)
+      tone(523.25, 0.02, 0.12, 'triangle', 0.22);
+      // 4: exatamente em 1s
+      tone(523.25, 1.02, 0.12, 'triangle', 0.22);
+      // 3: exatamente em 2s
+      tone(523.25, 2.02, 0.12, 'triangle', 0.22);
+      // 2: exatamente em 3s
+      tone(523.25, 3.02, 0.12, 'triangle', 0.22);
+      // 1: sinal de largada exatamente em 4s
+      tone(880.00, 4.02, 0.28, 'triangle', 0.3);
+      tone(1320.0, 4.06, 0.22, 'sine', 0.2);
+    },
+    stopReadyCountdown() {
+      stopAll();
+    },
+    // Contagem isolada avulsa (se chamada manualmente)
     countdown(sec) {
       if (sec === 1 || sec <= 0) {
-        tone(880, 0, 0.25, 'triangle', 0.28);
-        tone(1320, 0.04, 0.22, 'sine', 0.18);
+        tone(880, 0, 0.28, 'triangle', 0.3);
+        tone(1320, 0.04, 0.22, 'sine', 0.2);
       } else {
         tone(523.25, 0, 0.12, 'triangle', 0.22);
       }
@@ -148,46 +207,46 @@ const sfx = (() => {
     hurry(sec) {
       const s = Math.max(1, Math.min(5, Number(sec) || 1));
       const f = 640 + (5 - s) * 120;
-      tone(f, 0, 0.06, 'square', 0.1);
-      tone(f * 1.5, 0.01, 0.05, 'sine', 0.09);
+      tone(f, 0, 0.07, 'square', 0.12);
+      tone(f * 1.5, 0.01, 0.06, 'sine', 0.1);
     },
-    // Som clássico de tick (legado)
     tick() {
       this.hurry(3);
     },
     // Revelação da resposta no telão
     reveal() {
-      tone(523.25, 0, 0.35, 'triangle', 0.18);
-      tone(659.25, 0.02, 0.35, 'triangle', 0.18);
-      tone(783.99, 0.04, 0.45, 'sine', 0.22);
-      tone(1046.50, 0.06, 0.5, 'sine', 0.16);
+      tone(523.25, 0, 0.35, 'triangle', 0.2);
+      tone(659.25, 0.02, 0.35, 'triangle', 0.2);
+      tone(783.99, 0.04, 0.45, 'sine', 0.25);
+      tone(1046.50, 0.06, 0.5, 'sine', 0.18);
     },
     // Acertou a questão
     right() {
-      tone(523.25, 0, 0.12, 'triangle', 0.22);
-      tone(659.25, 0.08, 0.12, 'triangle', 0.24);
-      tone(783.99, 0.16, 0.16, 'triangle', 0.26);
-      tone(1046.50, 0.24, 0.45, 'sine', 0.32);
-      tone(2093.00, 0.24, 0.3, 'sine', 0.1);
+      tone(523.25, 0, 0.12, 'triangle', 0.25);
+      tone(659.25, 0.08, 0.12, 'triangle', 0.26);
+      tone(783.99, 0.16, 0.16, 'triangle', 0.28);
+      tone(1046.50, 0.24, 0.45, 'sine', 0.35);
+      tone(2093.00, 0.24, 0.3, 'sine', 0.12);
     },
     // Errou a questão / Esgotou tempo
     wrong() {
-      tone(260, 0, 0.2, 'sawtooth', 0.16, 200);
-      tone(195, 0.18, 0.35, 'sawtooth', 0.18, 140);
+      tone(260, 0, 0.2, 'sawtooth', 0.18, 200);
+      tone(195, 0.18, 0.35, 'sawtooth', 0.2, 140);
     },
     // Fanfarra épica de vitória para o Pódio
     victory() {
-      tone(392.00, 0, 0.15, 'triangle', 0.22);
-      tone(523.25, 0.15, 0.15, 'triangle', 0.24);
-      tone(659.25, 0.30, 0.15, 'triangle', 0.26);
-      tone(783.99, 0.45, 0.3, 'triangle', 0.3);
-      tone(659.25, 0.75, 0.15, 'triangle', 0.24);
-      tone(783.99, 0.90, 0.25, 'triangle', 0.3);
+      stopAll();
+      tone(392.00, 0, 0.15, 'triangle', 0.24);
+      tone(523.25, 0.15, 0.15, 'triangle', 0.26);
+      tone(659.25, 0.30, 0.15, 'triangle', 0.28);
+      tone(783.99, 0.45, 0.3, 'triangle', 0.32);
+      tone(659.25, 0.75, 0.15, 'triangle', 0.26);
+      tone(783.99, 0.90, 0.25, 'triangle', 0.32);
       // Acorde triunfal final
-      tone(523.25, 1.15, 0.85, 'triangle', 0.26);
-      tone(659.25, 1.15, 0.85, 'triangle', 0.26);
-      tone(783.99, 1.15, 0.85, 'sine', 0.32);
-      tone(1046.50, 1.15, 0.95, 'sine', 0.35);
+      tone(523.25, 1.15, 0.85, 'triangle', 0.28);
+      tone(659.25, 1.15, 0.85, 'triangle', 0.28);
+      tone(783.99, 1.15, 0.85, 'sine', 0.34);
+      tone(1046.50, 1.15, 0.95, 'sine', 0.38);
     },
     end() {
       this.victory();
@@ -196,7 +255,7 @@ const sfx = (() => {
 })();
 
 // Desbloqueia AudioContext em navegadores mobile (iOS/Safari) e desktop no primeiro toque/clique
-['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'].forEach(evt => {
+['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'focusin'].forEach(evt => {
   window.addEventListener(evt, () => { sfx.unlock(); }, { capture: true, passive: true });
 });
 

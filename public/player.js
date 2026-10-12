@@ -13,6 +13,7 @@
   if (saved && saved.name) $('nick').value = saved.name;
 
   let joined = false;      // já entrou (para decidir se reconecta sozinho)
+  let lobbyWelcomed = false;
   let timerRaf = 0;
   let lastState = null;
   let currentQIndex = -1;
@@ -86,9 +87,8 @@
     document.body.classList.toggle('has-hud', ['ready', 'question', 'answered', 'result', 'podium'].includes(name));
     if ($('hud')) $('hud').classList.toggle('hidden', !document.body.classList.contains('has-hud'));
     const isOut = name === 'join' || name === 'kicked';
-    if ($('player-top')) $('player-top').classList.toggle('hidden', isOut);
-    const toolsEl = document.querySelector('.tools');
-    if (toolsEl) toolsEl.classList.toggle('hidden', isOut);
+    document.body.classList.toggle('is-join', isOut);
+    if ($('btn-leave-anywhere')) $('btn-leave-anywhere').classList.toggle('hidden', isOut);
   }
 
   function setError(msg) {
@@ -185,7 +185,11 @@
     }
   }
 
-  function toggleMute() { sfx.toggle(); updateSoundUI(); }
+  function toggleMute() {
+    sfx.toggle();
+    if (!sfx.muted) sfx.tap();
+    updateSoundUI();
+  }
   if ($('btn-full')) $('btn-full').addEventListener('click', toggleFull);
   if ($('btn-mute')) $('btn-mute').addEventListener('click', toggleMute);
   const volSlider = $('vol-slider');
@@ -307,6 +311,7 @@
     document.body.classList.toggle('quiz-active', s.phase !== 'login' && s.phase !== 'lobby');
 
     if (s.phase === 'lobby') {
+      sfx.stopReadyCountdown();
       cancelTimer();
       currentQIndex = -1;
       myChoiceIndex = null;
@@ -316,13 +321,21 @@
       }
       renderLobbyPlayers(s);
       show('lobby');
+      if (!lobbyWelcomed) {
+        lobbyWelcomed = true;
+        sfx.welcome();
+      }
     } else if (s.phase === 'ready') {
       cancelTimer();
-      currentQIndex = -1;
+      if (currentQIndex !== s.qIndex) {
+        currentQIndex = s.qIndex;
+        sfx.scheduleReadyCountdown();
+      }
       myChoiceIndex = null;
       show('ready');
       if (navigator.vibrate) navigator.vibrate(30);
     } else if (s.phase === 'question') {
+      sfx.stopReadyCountdown();
       if (s.answered !== null) {
         myChoiceIndex = s.answered;
         cancelTimer();
@@ -337,6 +350,7 @@
       currentQIndex = s.qIndex;
       myChoiceIndex = null;
       cancelTimer();
+      sfx.go();
       const q = s.question;
       const box = $('answers');
       box.classList.toggle('one-col', q.options.length < 3);
@@ -344,6 +358,7 @@
         `<button class="ans opt-${i}" data-i="${i}" id="ans-${i}">${shapeHtml(i)}<span class="t">${esc(t)}</span></button>`
       ).join('');
       box.querySelectorAll('.ans').forEach(b => b.addEventListener('click', () => {
+        sfx.unlock();
         const choice = Number(b.dataset.i);
         myChoiceIndex = choice;
         sfx.tap();
@@ -360,9 +375,11 @@
       show('question');
       runTimer(s.remaining, q.time);
     } else if (s.phase === 'reveal') {
+      sfx.stopReadyCountdown();
       cancelTimer();
       renderResult(s);
     } else if (s.phase === 'podium') {
+      sfx.stopReadyCountdown();
       cancelTimer();
       renderPodium(s);
     }

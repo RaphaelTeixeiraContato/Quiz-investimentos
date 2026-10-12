@@ -12,7 +12,7 @@ body { min-height: 100dvh; display: flex; flex-direction: column; font-size: 17p
   gap: 1.2rem;
   padding: 1rem 2.4rem;
   width: 100%;
-  z-index: 10;
+  z-index: 50;
 }
 .player-top .brand {
   justify-self: start;
@@ -26,11 +26,60 @@ body { min-height: 100dvh; display: flex; flex-direction: column; font-size: 17p
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  z-index: 20;
+  z-index: 60;
 }
-body.quiz-active .player-top { opacity: 0; pointer-events: none; transform: translateY(-100%); transition: all 0.4s ease; display: none; }
-body.quiz-active .tools { opacity: 0.2; transition: opacity 0.3s ease; }
-body.quiz-active .tools:hover { opacity: 1; }
+
+/* Quando na tela de login inicial (is-join), cabeçalho flutuante no canto superior direito apenas com os controles */
+body.is-join .player-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex !important;
+  justify-content: flex-end;
+  padding: 1.2rem 2rem;
+  pointer-events: none;
+  background: transparent;
+  z-index: 50;
+}
+body.is-join .player-top * {
+  pointer-events: auto;
+}
+body.is-join .player-top .brand,
+body.is-join .player-top .header-nick-card {
+  display: none !important;
+}
+
+/* Durante as perguntas e rodadas (quiz-active), cabeçalho flutuante discreto com as ferramentas */
+body.quiz-active .player-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex !important;
+  justify-content: flex-end;
+  padding: 0.8rem 1.4rem;
+  pointer-events: none;
+  background: transparent;
+  z-index: 100;
+  opacity: 1;
+  transform: none;
+}
+body.quiz-active .player-top * {
+  pointer-events: auto;
+}
+body.quiz-active .player-top .brand,
+body.quiz-active .player-top .header-nick-card {
+  display: none !important;
+}
+body.quiz-active .player-top .tools {
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+body.quiz-active .player-top .tools:hover,
+body.quiz-active .player-top .tools:focus-within {
+  opacity: 1;
+}
 
 /* Campo de Apelido no Centro do Cabeçalho */
 .header-nick-card {
@@ -150,6 +199,15 @@ body.quiz-active .tools:hover { opacity: 1; }
     flex: 1;
     min-width: 0;
     width: auto;
+  }
+  body.is-join .player-top {
+    padding: 0.8rem 1rem;
+  }
+  body.quiz-active .player-top {
+    padding: 0.6rem 0.8rem;
+  }
+  body.quiz-active .player-top .tools {
+    opacity: 0.55;
   }
 }
 

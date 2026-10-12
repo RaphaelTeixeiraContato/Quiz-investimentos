@@ -28,7 +28,7 @@ const DATA_DIR = path.join(__dirname, 'data');
 const QUIZZES_FILE = path.join(DATA_DIR, 'quizzes.json');
 const DEFAULT_QUESTIONS_FILE = path.join(DATA_DIR, 'questions.default.json');
 
-const READY_MS = 5000;       // contagem "prepare-se" antes de cada pergunta
+const READY_MS = 5500;       // contagem "prepare-se" antes de cada pergunta
 const GRACE_MS = 700;        // tolerância de rede após o fim do tempo
 const MAX_NAME = 16;
 
@@ -585,8 +585,7 @@ function joinPlayer(ws, msg) {
   ws.ctx = { role: 'player', game, player };
   game.lastActivity = Date.now();
   send(ws, { t: 'joined', token: player.token, pin: game.pin, name: player.name });
-  pushPlayer(game, player);
-  pushHost(game);
+  pushAll(game);
 }
 
 function handleHost(ws, msg) {
@@ -633,7 +632,7 @@ function handleHost(ws, msg) {
         send(p.ws, { t: 'kicked' });
         try { p.ws && p.ws.close(); } catch (_) {}
         game.players.delete(p.id);
-        pushHost(game);
+        pushAll(game);
         maybeEndEarly(game);
       }
       break;
@@ -660,11 +659,12 @@ function handlePlayer(ws, msg) {
     return;
   }
 
-  if (msg.t === 'player:leave' && game.phase === 'lobby') {
+  if (msg.t === 'player:leave') {
     game.players.delete(player.id);
     send(ws, { t: 'kicked' });
     try { ws.close(); } catch (_) {}
-    pushHost(game);
+    pushAll(game);
+    maybeEndEarly(game);
     return;
   }
 
@@ -720,8 +720,7 @@ wss.on('connection', ws => {
       if (ctx.game.hostWs === ws) ctx.game.hostWs = null;
     } else if (ctx.player.ws === ws) {
       ctx.player.connected = false;
-      pushHost(ctx.game);
-      if (ctx.game.phase === 'question') pushPlayers(ctx.game);
+      pushAll(ctx.game);
       maybeEndEarly(ctx.game);
     }
   });

@@ -301,7 +301,10 @@
     else if (s.phase === 'podium') { if (changed) renderPodium(s); }
 
     if (s.phase !== 'question') stopTimer();
-    if (s.phase !== 'ready') clearInterval(readyTimer);
+    if (s.phase !== 'ready') {
+      clearInterval(readyTimer);
+      sfx.stopReadyCountdown();
+    }
   }
 
   function renderLobby(s, prev) {
@@ -342,7 +345,9 @@
     show('ready');
     $('ready-count').textContent = `Pergunta ${s.qIndex + 1} de ${s.total}`;
     $('ready-q').textContent = s.question.text;
-    sfx.countdown(5);
+    
+    // Contagem sonora de precisão milimétrica sem qualquer atraso
+    sfx.scheduleReadyCountdown();
 
     const circle = $('ready-timer-circle');
     circle.textContent = '5';
@@ -351,20 +356,23 @@
     circle.classList.add('pulse-anim');
     
     clearInterval(readyTimer);
-    let secondsLeft = 5;
+    const startMs = performance.now();
+    let lastSec = 5;
+
     readyTimer = setInterval(() => {
-      secondsLeft--;
-      if (secondsLeft > 0) {
-        circle.textContent = secondsLeft;
+      const elapsed = performance.now() - startMs;
+      const sec = Math.max(1, 5 - Math.floor(elapsed / 1000));
+      if (sec !== lastSec && sec >= 1) {
+        lastSec = sec;
+        circle.textContent = sec;
         circle.classList.remove('pulse-anim');
         void circle.offsetWidth;
         circle.classList.add('pulse-anim');
-        sfx.countdown(secondsLeft);
       }
-      if (secondsLeft <= 0) {
+      if (elapsed >= 5000) {
         clearInterval(readyTimer);
       }
-    }, 1000);
+    }, 50);
   }
 
   function optsHtml(q) {
