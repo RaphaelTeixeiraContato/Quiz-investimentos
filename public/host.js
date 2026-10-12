@@ -4,7 +4,7 @@
   const KEY = 'quiz-host';
 
   let saved = null;
-  try { saved = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (_) {}
+  try { saved = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (_) { }
 
   let info = { lan: [], publicUrl: '' };
   let joinBase = location.origin;
@@ -40,7 +40,7 @@
     joinBase = i.publicUrl || (local && i.lan.length ? i.lan[0] : location.origin);
     if (i.quizzes) populateQuizSelects(i.quizzes);
     if (state) renderJoinInfo();
-  }).catch(() => {});
+  }).catch(() => { });
 
   function show(name) {
     screens.forEach(s => {
@@ -180,13 +180,13 @@
     switch (s.phase) {
       case 'lobby': label = 'Começar quiz ▶'; disabled = s.players.length === 0; break;
       case 'question': c.classList.add('hidden'); return;
-      case 'reveal': 
-        if (s.reveal && s.reveal.isLast) { label = 'Ver pódio 🏆'; } 
+      case 'reveal':
+        if (s.reveal && s.reveal.isLast) { label = 'Ver pódio 🏆'; }
         else { c.classList.add('hidden'); return; }
         break;
-      case 'podium': 
-        c.classList.add('hidden'); 
-        btn.disabled = false; 
+      case 'podium':
+        c.classList.add('hidden');
+        btn.disabled = false;
         return;
       default: c.classList.add('hidden'); return;
     }
@@ -202,6 +202,27 @@
     if (t) sock.send({ t });
   }
 
+  function addBot() {
+    if (!state) return;
+    sock.send({ t: 'host:add-bot' });
+    toast('🤖 1 Bot adicionado para teste!');
+  }
+
+  function addBots(count = 5) {
+    if (!state) return;
+    sock.send({ t: 'host:add-bots', count });
+    toast(`🤖 ${count} Bots adicionados!`);
+  }
+
+  function clearBots() {
+    if (!state) return;
+    sock.send({ t: 'host:clear-bots' });
+    toast('🗑️ Bots de teste removidos!');
+  }
+
+  const addBotBtn = $('btn-add-bot');
+  if (addBotBtn) addBotBtn.addEventListener('click', addBot);
+
   $('ctrl-btn').addEventListener('click', advance);
   const podiumRestartBtn = $('btn-podium-restart');
   if (podiumRestartBtn) {
@@ -215,10 +236,13 @@
     if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); advance(); }
     else if (e.key === 'f' || e.key === 'F') toggleFull();
     else if (e.key === 'm' || e.key === 'M') toggleMute();
+    else if (e.key === '1') { e.preventDefault(); addBot(); }
+    else if (e.key === '5') { e.preventDefault(); addBots(5); }
+    else if (e.key === '0') { e.preventDefault(); clearBots(); }
   });
 
   function toggleFull() {
-    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {});
+    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => { });
   }
 
   function updateSoundUI() {
@@ -349,7 +373,7 @@
     circle.classList.remove('pulse-anim');
     void circle.offsetWidth; // trigger reflow
     circle.classList.add('pulse-anim');
-    
+
     clearInterval(readyTimer);
     let secondsLeft = 5;
     readyTimer = setInterval(() => {
@@ -422,7 +446,7 @@
       return `<div class="opt opt-${i} ${cls}">${shapeHtml(i)}<span class="t">${esc(t)}</span><span class="num">${r.counts[i]}</span><span class="bar" style="width:${Math.round(r.counts[i] / max * 100)}%"></span></div>`;
     }).join('');
     $('r-expl').textContent = r.explanation || '';
-    
+
     const boardList = r.board || [];
     $('r-board').innerHTML = boardList.map((p, i) => {
       const rank = i + 1;
