@@ -87,6 +87,7 @@ const sfx = (() => {
       localStorage.setItem('quiz-muted', muted ? '1' : '0');
       return muted;
     },
+    tap() { tone(480, 0, .08, 'sine', .12); tone(720, .04, .1, 'sine', .1); },
     join() { tone(660, 0, .12, 'triangle'); tone(880, .08, .16, 'triangle'); },
     tick() { tone(1000, 0, .05, 'square', .05); },
     go() { tone(523, 0, .15, 'triangle'); tone(784, .12, .25, 'triangle'); },
@@ -95,6 +96,11 @@ const sfx = (() => {
     end() { tone(392, 0, .2, 'triangle'); tone(523, .2, .2, 'triangle'); tone(659, .4, .2, 'triangle'); tone(784, .6, .5, 'triangle'); }
   };
 })();
+
+// Desbloqueia AudioContext em navegadores mobile (iOS/Android) no primeiro toque
+window.addEventListener('click', () => { sfx.unlock(); }, { passive: true });
+window.addEventListener('touchstart', () => { sfx.unlock(); }, { passive: true });
+
 
 /** Componente de Dropdown Customizado Glassmorphism */
 function renderCustomDropdown({ container, options, value, onChange }) {

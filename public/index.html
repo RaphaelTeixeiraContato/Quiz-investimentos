@@ -55,9 +55,11 @@
     .bg i {
       position: absolute;
       border-radius: 50%;
-      filter: blur(85px);
+      filter: blur(80px);
       opacity: 0.22;
       pointer-events: none;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
     }
     .bg i:nth-child(1) {
       width: 50vmax;
@@ -84,6 +86,14 @@
       left: 40%;
       opacity: 0.18;
       animation: movePurple3 24s ease-in-out infinite alternate;
+    }
+
+    @media (max-width: 768px) {
+      .bg i {
+        animation: none !important;
+        filter: blur(40px) !important;
+        transform: translate3d(0, 0, 0) !important;
+      }
     }
 
     .hero-brand, .roles-grid {

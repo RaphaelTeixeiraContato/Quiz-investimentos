@@ -202,27 +202,6 @@
     if (t) sock.send({ t });
   }
 
-  function addBot() {
-    if (!state) return;
-    sock.send({ t: 'host:add-bot' });
-    toast('🤖 1 Bot adicionado para teste!');
-  }
-
-  function addBots(count = 5) {
-    if (!state) return;
-    sock.send({ t: 'host:add-bots', count });
-    toast(`🤖 ${count} Bots adicionados!`);
-  }
-
-  function clearBots() {
-    if (!state) return;
-    sock.send({ t: 'host:clear-bots' });
-    toast('🗑️ Bots de teste removidos!');
-  }
-
-  const addBotBtn = $('btn-add-bot');
-  if (addBotBtn) addBotBtn.addEventListener('click', addBot);
-
   $('ctrl-btn').addEventListener('click', advance);
   const podiumRestartBtn = $('btn-podium-restart');
   if (podiumRestartBtn) {
@@ -236,9 +215,6 @@
     if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); advance(); }
     else if (e.key === 'f' || e.key === 'F') toggleFull();
     else if (e.key === 'm' || e.key === 'M') toggleMute();
-    else if (e.key === '1') { e.preventDefault(); addBot(); }
-    else if (e.key === '5') { e.preventDefault(); addBots(5); }
-    else if (e.key === '0') { e.preventDefault(); clearBots(); }
   });
 
   function toggleFull() {

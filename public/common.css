@@ -85,7 +85,15 @@ body {
     linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
 }
-.bg i { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .22; pointer-events: none; }
+.bg i {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: .22;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
 .bg i:nth-child(1) {
   width: 50vmax; height: 38vmax; background: radial-gradient(circle, #6b21a8 0%, #4c1d95 70%);
   top: -10vmax; left: 10%;
@@ -102,6 +110,18 @@ body {
   top: 30%; left: 40%;
   opacity: .18;
   animation: movePurple3 24s ease-in-out infinite alternate;
+}
+
+@media (max-width: 768px) {
+  .bg i {
+    animation: none !important;
+    filter: blur(40px) !important;
+    transform: translate3d(0, 0, 0) !important;
+  }
+  .card {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
 }
 
 @keyframes movePurple1 {

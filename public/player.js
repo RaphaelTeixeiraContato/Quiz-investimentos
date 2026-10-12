@@ -337,6 +337,7 @@
       box.querySelectorAll('.ans').forEach(b => b.addEventListener('click', () => {
         const choice = Number(b.dataset.i);
         myChoiceIndex = choice;
+        sfx.tap();
         sock.send({ t: 'player:answer', choice });
         if (navigator.vibrate) navigator.vibrate(40);
         cancelTimer();
@@ -379,15 +380,18 @@
           pill.classList.add('correct-pill');
           if (icon) icon.textContent = '✅';
           if (title) title.textContent = 'Você marcou a alternativa certa!';
+          sfx.right();
         } else {
           pill.classList.add('wrong-pill');
           if (icon) icon.textContent = '❌';
           if (title) title.textContent = 'Você marcou a alternativa errada!';
+          sfx.wrong();
         }
       } else {
         pill.classList.add('wrong-pill');
         if (icon) icon.textContent = '⏱️';
         if (title) title.textContent = 'Tempo Esgotado! Você não respondeu.';
+        sfx.wrong();
       }
     } else if (title) {
       title.textContent = (r && r.answered)
@@ -415,6 +419,7 @@
     $('pod-score').textContent = s.score + ' pts';
     const sub = $('pod-sub');
     if (sub) sub.textContent = '';
+    sfx.end();
     show('podium');
   }
 

@@ -114,7 +114,7 @@ const MIME = {
   '.webp': 'image/webp'
 };
 
-const ROUTES = { '/': 'index.html', '/player': 'player.html', '/host': 'host.html', '/admin': 'admin.html' };
+const ROUTES = { '/': 'player.html', '/player': 'player.html', '/host': 'host.html', '/admin': 'admin.html', '/menu': 'index.html' };
 
 function lanUrls() {
   const urls = [];
@@ -432,10 +432,6 @@ function pushAll(game) { pushHost(game); pushPlayers(game); }
 
 function clearTimer(game) {
   if (game.timer) { clearTimeout(game.timer); game.timer = null; }
-  if (game.botTimers) {
-    game.botTimers.forEach(t => clearTimeout(t));
-    game.botTimers = [];
-  }
 }
 
 function beginReady(game) {
@@ -455,7 +451,6 @@ function beginQuestion(game) {
   game.qStart = Date.now();
   game.qEnd = game.qStart + q.time * 1000;
   pushAll(game);
-  scheduleBotAnswers(game);
   game.timer = setTimeout(() => endQuestion(game), q.time * 1000 + GRACE_MS);
 }
 
@@ -526,97 +521,20 @@ function showPodium(game) {
 function maybeEndEarly(game) {
   if (game.phase !== 'question') return;
   const active = [...game.players.values()].filter(p => p.connected);
-  if (active.length && active.every(p => p.answer)) endQuestion(game);
-}
-
-/* ------------------------------------------------------------------ */
-/* BOTS DE TESTE (Simulação de Alunos)                                */
-/* ------------------------------------------------------------------ */
-
-const BOT_NAMES = [
-  'Sofia 🤖', 'Lucas 🤖', 'Julia 🤖', 'Matheus 🤖',
-  'Bia 🤖', 'Gabriel 🤖', 'Larissa 🤖', 'Pedro 🤖',
-  'Camila 🤖', 'Felipe 🤖', 'Isabella 🤖', 'Thiago 🤖',
-  'Enzo 🤖', 'Valentina 🤖', 'Arthur 🤖', 'Helena 🤖'
-];
-
-function createBot(game) {
-  let name = BOT_NAMES.find(n => ![...game.players.values()].some(p => p.name === n));
-  if (!name) name = `Bot ${game.players.size + 1} 🤖`;
-  const id = 'bot_' + crypto.randomBytes(3).toString('hex');
-  const bot = {
-    id,
-    name,
-    token: 'token_' + id,
-    ws: null,
-    isBot: true,
-    connected: true,
-    score: 0,
-    streak: 0,
-    answer: null,
-    last: null,
-    prevRank: null
-  };
-  game.players.set(id, bot);
-
-  if (game.phase === 'question') {
-    scheduleSingleBotAnswer(game, bot);
-  }
-
-  return bot;
-}
-
-function clearBots(game) {
-  for (const [id, p] of game.players.entries()) {
-    if (p.isBot) game.players.delete(id);
-  }
-  if (game.botTimers) {
-    game.botTimers.forEach(t => clearTimeout(t));
-    game.botTimers = [];
-  }
-}
-
-function scheduleBotAnswers(game) {
-  if (game.botTimers) {
-    game.botTimers.forEach(t => clearTimeout(t));
-    game.botTimers = [];
-  }
-  for (const p of game.players.values()) {
-    if (p.isBot && p.connected) {
-      scheduleSingleBotAnswer(game, p);
+  if (active.length && active.every(p => p.answer)) {
+    // Suspense breve de 1.2s antes de revelar o resultado no telão
+    if (!game.endingEarly) {
+      game.endingEarly = true;
+      clearTimer(game);
+      game.timer = setTimeout(() => {
+        game.endingEarly = false;
+        endQuestion(game);
+      }, 1200);
     }
   }
 }
 
-function scheduleSingleBotAnswer(game, bot) {
-  const q = currentQuestion(game);
-  if (!q) return;
-  const totalMs = q.time * 1000;
-  // Delay aleatório escalonado entre 3.5s e (tempo total - 2s)
-  const minDelay = Math.min(3500, Math.max(1500, totalMs * 0.25));
-  const maxDelay = Math.max(minDelay + 1000, totalMs - 2500);
-  const delay = Math.round(minDelay + Math.random() * (maxDelay - minDelay));
 
-  if (!game.botTimers) game.botTimers = [];
-  const timer = setTimeout(() => {
-    if (game.phase !== 'question' || bot.answer) return;
-    let choice;
-    if (Math.random() < 0.7) {
-      choice = q.correct;
-    } else {
-      const wrong = [0, 1, 2, 3].slice(0, q.options.length).filter(i => i !== q.correct);
-      choice = wrong.length ? wrong[Math.floor(Math.random() * wrong.length)] : 0;
-    }
-    const now = Date.now();
-    bot.answer = { choice, ms: Math.max(0, now - game.qStart) };
-    game.lastActivity = now;
-    pushPlayers(game);
-    pushHost(game);
-    maybeEndEarly(game);
-  }, delay);
-
-  game.botTimers.push(timer);
-}
 
 /* ------------------------------------------------------------------ */
 /* WebSocket                                                           */
@@ -720,24 +638,7 @@ function handleHost(ws, msg) {
       }
       break;
     }
-    case 'host:add-bot':
-      createBot(game);
-      pushHost(game);
-      pushPlayers(game);
-      break;
-    case 'host:add-bots': {
-      const count = Math.min(20, Math.max(1, Number(msg.count) || 1));
-      for (let i = 0; i < count; i++) createBot(game);
-      pushHost(game);
-      pushPlayers(game);
-      break;
-    }
-    case 'host:clear-bots':
-      clearBots(game);
-      pushHost(game);
-      pushPlayers(game);
-      maybeEndEarly(game);
-      break;
+
   }
 }
 

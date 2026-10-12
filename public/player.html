@@ -41,37 +41,36 @@
       </form>
       <p id="lobby-nick-error" class="error hidden"></p>
     </div>
-  </header>
-
-  <div class="tools hidden">
-    <div class="sound-control" id="sound-control" title="Controle de Áudio">
-      <button class="sound-btn" id="btn-mute" aria-label="Ligar/desligar som">
-        <svg id="sound-icon" viewBox="0 0 24 24">
-          <path
-            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+    <div class="tools">
+      <div class="sound-control" id="sound-control" title="Controle de Áudio">
+        <button class="sound-btn" id="btn-mute" aria-label="Ligar/desligar som">
+          <svg id="sound-icon" viewBox="0 0 24 24">
+            <path
+              d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+          </svg>
+        </button>
+        <div class="sound-expandable">
+          <input type="range" id="vol-slider" class="vol-slider" min="0" max="1" step="0.01" value="0.8"
+            title="Volume do som">
+          <span id="vol-val" class="vol-val">80%</span>
+        </div>
+      </div>
+      <button class="icon-btn" id="btn-leave-anywhere" title="Sair da partida" aria-label="Sair da partida">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
         </svg>
       </button>
-      <div class="sound-expandable">
-        <input type="range" id="vol-slider" class="vol-slider" min="0" max="1" step="0.01" value="0.8"
-          title="Volume do som">
-        <span id="vol-val" class="vol-val">80%</span>
-      </div>
+      <button class="icon-btn" id="btn-full" title="Tela cheia (F)" aria-label="Tela cheia">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+        </svg>
+      </button>
     </div>
-    <button class="icon-btn" id="btn-leave-anywhere" title="Sair da partida" aria-label="Sair da partida">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-        <polyline points="16 17 21 12 16 7"></polyline>
-        <line x1="21" y1="12" x2="9" y2="12"></line>
-      </svg>
-    </button>
-    <button class="icon-btn" id="btn-full" title="Tela cheia (F)" aria-label="Tela cheia">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
-      </svg>
-    </button>
-  </div>
+  </header>
 
   <main id="app">
 
@@ -91,10 +90,7 @@
         <p id="join-error" class="error hidden"></p>
         <button id="join-btn" class="btn" type="submit">Entrar no jogo</button>
       </form>
-      <div class="login-footer-actions">
-        <a href="/" class="btn-back-menu" title="Voltar para a escolha de Jogador ou Apresentador">Voltar ao menu
-          principal</a>
-      </div>
+
     </section>
 
     <!-- SALA DE ESPERA (Ampliada em 100% da tela - Quadrado Verde) -->
@@ -116,7 +112,7 @@
         </div>
       </div>
       <footer class="controls" id="player-controls">
-        <button id="btn-leave-lobby" class="btn big" type="button">Sair da sala</button>
+        <button id="btn-leave-lobby" class="btn btn-leave-lobby-sm" type="button">Sair da sala</button>
       </footer>
     </section>
 

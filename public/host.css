@@ -5,36 +5,7 @@ body.host { height: 100vh; display: flex; flex-direction: column; overflow: hidd
   border-radius: 999px; padding: .5rem 1.4rem; font-size: 1.15rem; font-weight: 600; color: var(--muted); }
 .joinpill b { color: var(--mint); font-size: 1.5rem; letter-spacing: .15em; }
 .tools { display: flex; align-items: center; gap: .7rem; z-index: 2; }
-.btn-bot {
-  background: rgba(138, 43, 226, 0.22);
-  border: 1px solid rgba(168, 85, 247, 0.45);
-  color: #ffffff;
-  border-radius: 999px;
-  padding: 0.35rem 0.85rem;
-  font-weight: 700;
-  font-size: 0.88rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-}
-.btn-bot:hover {
-  background: rgba(138, 43, 226, 0.5);
-  border-color: #c084fc;
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-  transform: translateY(-1px);
-}
-.btn-bot kbd {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  padding: 0.1rem 0.38rem;
-  font-size: 0.72rem;
-  font-family: inherit;
-  font-weight: 800;
-  color: #ffd166;
-}
+
 .progress { font-weight: 700; color: var(--muted); background: var(--card); border: 1px solid var(--card-border); border-radius: 999px; padding: .4rem 1.2rem; }
 
 /* Oculta os itens do cabeçalho durante o quiz e libera o espaço */
