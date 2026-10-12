@@ -4,7 +4,7 @@
   const LS = 'quiz-player';
 
   let saved = null;
-  try { saved = JSON.parse(localStorage.getItem(LS) || 'null'); } catch (_) { }
+  try { saved = JSON.parse(localStorage.getItem(LS) || 'null'); } catch (_) {}
 
   const params = new URLSearchParams(location.search);
   const pinParam = (params.get('pin') || '').replace(/\D/g, '').slice(0, 6);
@@ -34,8 +34,8 @@
   function getChoiceBadgeHtml(choiceIndex, question) {
     if (choiceIndex === null || choiceIndex === undefined || choiceIndex < 0) return '';
     const shape = shapeHtml(choiceIndex);
-    const label = (question && question.options && question.options[choiceIndex])
-      ? esc(question.options[choiceIndex])
+    const label = (question && question.options && question.options[choiceIndex]) 
+      ? esc(question.options[choiceIndex]) 
       : `Opção ${['A', 'B', 'C', 'D'][choiceIndex] || ''}`;
     return `<div class="waiting-choice-badge choice-${choiceIndex}">${shape}<span>${label}</span></div>`;
   }
@@ -70,8 +70,8 @@
 
     const tipEl = $('waiting-tip-text');
     if (tipEl) {
-      const tipText = (q.waitingTip && q.waitingTip.trim())
-        ? q.waitingTip.trim()
+      const tipText = (q.waitingTip && q.waitingTip.trim()) 
+        ? q.waitingTip.trim() 
         : DEFAULT_TIPS[(s.qIndex >= 0 ? s.qIndex : 0) % DEFAULT_TIPS.length];
       tipEl.textContent = tipText;
     }
@@ -159,7 +159,7 @@
   /* ---------- Controles de Áudio, Tela Cheia e Ações da Sala ---------- */
 
   function toggleFull() {
-    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => { });
+    if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {});
   }
 
   function updateSoundUI() {
@@ -235,7 +235,7 @@
 
   const leaveModal = $('leave-modal');
   const showLeaveModal = () => leaveModal.classList.remove('hidden');
-
+  
   if ($('btn-leave-lobby')) $('btn-leave-lobby').addEventListener('click', showLeaveModal);
   if ($('btn-leave-anywhere')) $('btn-leave-anywhere').addEventListener('click', showLeaveModal);
 
@@ -337,6 +337,7 @@
       box.querySelectorAll('.ans').forEach(b => b.addEventListener('click', () => {
         const choice = Number(b.dataset.i);
         myChoiceIndex = choice;
+        sfx.tap();
         sock.send({ t: 'player:answer', choice });
         if (navigator.vibrate) navigator.vibrate(40);
         cancelTimer();
@@ -361,10 +362,10 @@
   function renderResult(s) {
     const r = s.result;
     if (!r) { show('ready'); $('ready-count').textContent = 'Aguarde'; return; }
-
+    
     const q = s.question || {};
     const choice = (r.choice !== null && r.choice !== undefined) ? r.choice : myChoiceIndex;
-
+    
     const choiceBadge = $('result-choice-badge');
     if (choiceBadge) choiceBadge.innerHTML = getChoiceBadgeHtml(choice, q);
 
@@ -379,15 +380,18 @@
           pill.classList.add('correct-pill');
           if (icon) icon.textContent = '✅';
           if (title) title.textContent = 'Você marcou a alternativa certa!';
+          sfx.right();
         } else {
           pill.classList.add('wrong-pill');
           if (icon) icon.textContent = '❌';
           if (title) title.textContent = 'Você marcou a alternativa errada!';
+          sfx.wrong();
         }
       } else {
         pill.classList.add('wrong-pill');
         if (icon) icon.textContent = '⏱️';
         if (title) title.textContent = 'Tempo Esgotado! Você não respondeu.';
+        sfx.wrong();
       }
     } else if (title) {
       title.textContent = (r && r.answered)
@@ -397,8 +401,8 @@
 
     const tipEl = $('result-tip-text');
     if (tipEl) {
-      const tipText = (q.waitingTip && q.waitingTip.trim())
-        ? q.waitingTip.trim()
+      const tipText = (q.waitingTip && q.waitingTip.trim()) 
+        ? q.waitingTip.trim() 
         : DEFAULT_TIPS[(s.qIndex >= 0 ? s.qIndex : 0) % DEFAULT_TIPS.length];
       tipEl.textContent = tipText;
     }
@@ -415,6 +419,7 @@
     $('pod-score').textContent = s.score + ' pts';
     const sub = $('pod-sub');
     if (sub) sub.textContent = '';
+    sfx.end();
     show('podium');
   }
 
