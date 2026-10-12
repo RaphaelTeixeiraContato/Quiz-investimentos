@@ -45,7 +45,7 @@ function createSocket({ onOpen, onMessage, onClose }) {
   };
 }
 
-/* Efeitos sonoros simples (WebAudio, sem arquivos) com controle de volume */
+/* Efeitos sonoros robustos (WebAudio, sem arquivos externos) com controle de volume e suporte pleno a iOS/PC */
 const sfx = (() => {
   let ctx = null;
   let muted = localStorage.getItem('quiz-muted') === '1';
@@ -53,24 +53,57 @@ const sfx = (() => {
   if (isNaN(volume) || volume < 0 || volume > 1) volume = 0.8;
 
   function ac() {
-    if (!ctx) { try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {} }
-    if (ctx && ctx.state === 'suspended') ctx.resume();
+    if (!ctx) {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) ctx = new AudioCtx();
+      } catch (_) {}
+    }
+    if (ctx && (ctx.state === 'suspended' || ctx.state === 'interrupted')) {
+      ctx.resume().catch(() => {});
+    }
     return ctx;
   }
-  function tone(freq, start, dur, type = 'sine', baseVol = 0.15) {
-    const c = ac(); if (!c || muted || volume <= 0) return;
-    const finalVol = baseVol * volume;
-    const o = c.createOscillator(), g = c.createGain();
-    o.type = type; o.frequency.value = freq;
-    const t = c.currentTime + start;
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(finalVol, t + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g); g.connect(c.destination);
-    o.start(t); o.stop(t + dur + 0.05);
+
+  function tone(freq, start, dur, type = 'sine', baseVol = 0.2, endFreq = null) {
+    const c = ac();
+    if (!c || muted || volume <= 0) return;
+    try {
+      const finalVol = Math.max(0.001, baseVol * volume);
+      const now = c.currentTime;
+      const t = Math.max(now, now + (start || 0));
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(freq, t);
+      if (endFreq) {
+        o.frequency.exponentialRampToValueAtTime(Math.max(1, endFreq), t + dur);
+      }
+      g.gain.setValueAtTime(0, t);
+      const attack = Math.min(0.015, dur * 0.2);
+      g.gain.linearRampToValueAtTime(finalVol, t + attack);
+      g.gain.linearRampToValueAtTime(0, t + dur);
+      o.connect(g);
+      g.connect(c.destination);
+      o.start(t);
+      o.stop(t + dur + 0.05);
+    } catch (_) {}
   }
+
   return {
-    unlock() { ac(); },
+    unlock() {
+      const c = ac();
+      if (c) {
+        try {
+          if (c.state === 'suspended' || c.state === 'interrupted') c.resume().catch(() => {});
+          const buf = c.createBuffer(1, 1, 22050);
+          const src = c.createBufferSource();
+          src.buffer = buf;
+          src.connect(c.destination);
+          src.start(0);
+        } catch (_) {}
+      }
+    },
     get muted() { return muted; },
     get volume() { return volume; },
     setVolume(v) {
@@ -87,19 +120,85 @@ const sfx = (() => {
       localStorage.setItem('quiz-muted', muted ? '1' : '0');
       return muted;
     },
-    tap() { tone(480, 0, .08, 'sine', .12); tone(720, .04, .1, 'sine', .1); },
-    join() { tone(660, 0, .12, 'triangle'); tone(880, .08, .16, 'triangle'); },
-    tick() { tone(1000, 0, .05, 'square', .05); },
-    go() { tone(523, 0, .15, 'triangle'); tone(784, .12, .25, 'triangle'); },
-    right() { tone(659, 0, .14, 'triangle'); tone(880, .12, .14, 'triangle'); tone(1175, .24, .3, 'triangle'); },
-    wrong() { tone(220, 0, .25, 'sawtooth', .1); tone(165, .2, .35, 'sawtooth', .1); },
-    end() { tone(392, 0, .2, 'triangle'); tone(523, .2, .2, 'triangle'); tone(659, .4, .2, 'triangle'); tone(784, .6, .5, 'triangle'); }
+    // Clique de seleção de alternativa
+    tap() {
+      tone(440, 0, 0.04, 'sine', 0.2);
+      tone(880, 0.02, 0.07, 'triangle', 0.18);
+    },
+    // Aluno entra na sala de espera (som para o telão do apresentador)
+    join() {
+      tone(587.33, 0, 0.18, 'triangle', 0.24);
+      tone(880, 0.1, 0.35, 'sine', 0.28);
+      tone(1760, 0.1, 0.2, 'sine', 0.08);
+    },
+    // Contagem regressiva da tela de "Prepare-se" (5, 4, 3, 2, 1)
+    countdown(sec) {
+      if (sec === 1 || sec <= 0) {
+        tone(880, 0, 0.25, 'triangle', 0.28);
+        tone(1320, 0.04, 0.22, 'sine', 0.18);
+      } else {
+        tone(523.25, 0, 0.12, 'triangle', 0.22);
+      }
+    },
+    go() {
+      tone(523.25, 0, 0.15, 'triangle', 0.22);
+      tone(783.99, 0.1, 0.25, 'triangle', 0.24);
+    },
+    // Alerta de tempo acabando nos últimos 5 segundos de pergunta
+    hurry(sec) {
+      const s = Math.max(1, Math.min(5, Number(sec) || 1));
+      const f = 640 + (5 - s) * 120;
+      tone(f, 0, 0.06, 'square', 0.1);
+      tone(f * 1.5, 0.01, 0.05, 'sine', 0.09);
+    },
+    // Som clássico de tick (legado)
+    tick() {
+      this.hurry(3);
+    },
+    // Revelação da resposta no telão
+    reveal() {
+      tone(523.25, 0, 0.35, 'triangle', 0.18);
+      tone(659.25, 0.02, 0.35, 'triangle', 0.18);
+      tone(783.99, 0.04, 0.45, 'sine', 0.22);
+      tone(1046.50, 0.06, 0.5, 'sine', 0.16);
+    },
+    // Acertou a questão
+    right() {
+      tone(523.25, 0, 0.12, 'triangle', 0.22);
+      tone(659.25, 0.08, 0.12, 'triangle', 0.24);
+      tone(783.99, 0.16, 0.16, 'triangle', 0.26);
+      tone(1046.50, 0.24, 0.45, 'sine', 0.32);
+      tone(2093.00, 0.24, 0.3, 'sine', 0.1);
+    },
+    // Errou a questão / Esgotou tempo
+    wrong() {
+      tone(260, 0, 0.2, 'sawtooth', 0.16, 200);
+      tone(195, 0.18, 0.35, 'sawtooth', 0.18, 140);
+    },
+    // Fanfarra épica de vitória para o Pódio
+    victory() {
+      tone(392.00, 0, 0.15, 'triangle', 0.22);
+      tone(523.25, 0.15, 0.15, 'triangle', 0.24);
+      tone(659.25, 0.30, 0.15, 'triangle', 0.26);
+      tone(783.99, 0.45, 0.3, 'triangle', 0.3);
+      tone(659.25, 0.75, 0.15, 'triangle', 0.24);
+      tone(783.99, 0.90, 0.25, 'triangle', 0.3);
+      // Acorde triunfal final
+      tone(523.25, 1.15, 0.85, 'triangle', 0.26);
+      tone(659.25, 1.15, 0.85, 'triangle', 0.26);
+      tone(783.99, 1.15, 0.85, 'sine', 0.32);
+      tone(1046.50, 1.15, 0.95, 'sine', 0.35);
+    },
+    end() {
+      this.victory();
+    }
   };
 })();
 
-// Desbloqueia AudioContext em navegadores mobile (iOS/Android) no primeiro toque
-window.addEventListener('click', () => { sfx.unlock(); }, { passive: true });
-window.addEventListener('touchstart', () => { sfx.unlock(); }, { passive: true });
+// Desbloqueia AudioContext em navegadores mobile (iOS/Safari) e desktop no primeiro toque/clique
+['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'].forEach(evt => {
+  window.addEventListener(evt, () => { sfx.unlock(); }, { capture: true, passive: true });
+});
 
 
 /** Componente de Dropdown Customizado Glassmorphism */

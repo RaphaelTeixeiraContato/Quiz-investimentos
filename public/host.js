@@ -329,7 +329,7 @@
         </div>`;
       }).join('');
     }
-    if (joinedNew && lobbyIds.size < ids.size) sfx.join();
+    if (ids.size > lobbyIds.size) sfx.join();
     lobbyIds = ids;
   }
 
@@ -342,7 +342,7 @@
     show('ready');
     $('ready-count').textContent = `Pergunta ${s.qIndex + 1} de ${s.total}`;
     $('ready-q').textContent = s.question.text;
-    sfx.go();
+    sfx.countdown(5);
 
     const circle = $('ready-timer-circle');
     circle.textContent = '5';
@@ -359,6 +359,7 @@
         circle.classList.remove('pulse-anim');
         void circle.offsetWidth;
         circle.classList.add('pulse-anim');
+        sfx.countdown(secondsLeft);
       }
       if (secondsLeft <= 0) {
         clearInterval(readyTimer);
@@ -398,8 +399,10 @@
       if (num) num.style.color = color;
       num.textContent = sec;
       wrap.classList.toggle('low', sec <= 5);
-      if (sec <= 5 && sec > 0 && sec !== lastTickSec) sfx.tick();
-      lastTickSec = sec;
+      if (sec <= 5 && sec > 0 && sec !== lastTickSec) {
+        sfx.hurry(sec);
+        lastTickSec = sec;
+      }
       if (left > 0) timerRaf = requestAnimationFrame(tick);
     };
     timerRaf = requestAnimationFrame(tick);
@@ -436,8 +439,7 @@
       </li>`;
     }).join('') || '<li><span class="nm">Sem jogadores</span></li>';
 
-    const correctCount = r.counts[r.correct];
-    if (total && correctCount / total >= .5) sfx.right(); else sfx.wrong();
+    sfx.reveal();
   }
 
   function renderPodium(s) {
@@ -479,7 +481,7 @@
       }
     }
 
-    sfx.end();
+    sfx.victory();
     setTimeout(confetti, 2800);
     // Libera a rolagem da tela no momento exato em que a tabela aparece
     setTimeout(() => {

@@ -253,15 +253,24 @@
 
   function cancelTimer() { cancelAnimationFrame(timerRaf); }
 
+  let lastPlayerTickSec = -1;
   function runTimer(remaining, total) {
     cancelTimer();
+    lastPlayerTickSec = -1;
     const bar = $('timer-bar');
     const end = performance.now() + remaining;
     const tick = now => {
       const left = Math.max(0, end - now);
+      const sec = Math.ceil(left / 1000);
       const ratio = Math.min(1, left / (total * 1000));
       bar.style.transform = `scaleX(${ratio})`;
       bar.style.background = `hsl(${ratio * 120}, 75%, 65%)`;
+
+      if (myChoiceIndex === null && sec <= 5 && sec > 0 && sec !== lastPlayerTickSec) {
+        sfx.hurry(sec);
+        lastPlayerTickSec = sec;
+      }
+
       if (left > 0) timerRaf = requestAnimationFrame(tick);
     };
     timerRaf = requestAnimationFrame(tick);
@@ -419,7 +428,7 @@
     $('pod-score').textContent = s.score + ' pts';
     const sub = $('pod-sub');
     if (sub) sub.textContent = '';
-    sfx.end();
+    sfx.victory();
     show('podium');
   }
 
