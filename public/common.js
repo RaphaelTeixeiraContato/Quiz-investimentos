@@ -65,24 +65,8 @@ const sfx = (() => {
     return ctx;
   }
 
-  let keepAliveNode = null;
   let activeOscs = [];
-
-  function startKeepAlive(c) {
-    if (keepAliveNode || !c) return;
-    try {
-      // Infrasom a 10Hz com ganho 0.00001 (inaudível) mantém o pipeline de áudio ativo no iOS Safari e PC
-      const osc = c.createOscillator();
-      const gain = c.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = 10;
-      gain.gain.value = 0.00001;
-      osc.connect(gain);
-      gain.connect(c.destination);
-      osc.start(0);
-      keepAliveNode = osc;
-    } catch (_) {}
-  }
+  let isUnlocked = false;
 
   function tone(freq, start, dur, type = 'sine', baseVol = 0.22, endFreq = null) {
     const c = ac();
@@ -125,17 +109,19 @@ const sfx = (() => {
   return {
     unlock() {
       const c = ac();
-      if (c) {
-        try {
-          if (c.state === 'suspended' || c.state === 'interrupted') c.resume().catch(() => {});
-          const buf = c.createBuffer(1, 1, 22050);
-          const src = c.createBufferSource();
-          src.buffer = buf;
-          src.connect(c.destination);
-          src.start(0);
-          startKeepAlive(c);
-        } catch (_) {}
+      if (!c) return;
+      if (c.state === 'suspended' || c.state === 'interrupted') {
+        c.resume().catch(() => {});
       }
+      if (isUnlocked) return;
+      isUnlocked = true;
+      try {
+        const buf = c.createBuffer(1, 1, 22050);
+        const src = c.createBufferSource();
+        src.buffer = buf;
+        src.connect(c.destination);
+        src.start(0);
+      } catch (_) {}
     },
     get muted() { return muted; },
     get volume() { return volume; },
@@ -254,9 +240,10 @@ const sfx = (() => {
   };
 })();
 
-// Desbloqueia AudioContext em navegadores mobile (iOS/Safari) e desktop no primeiro toque/clique
-['click', 'touchstart', 'touchend', 'pointerdown', 'keydown', 'focusin'].forEach(evt => {
-  window.addEventListener(evt, () => { sfx.unlock(); }, { capture: true, passive: true });
+// Desbloqueia AudioContext em navegadores mobile (iOS/Safari) e desktop no primeiro toque/clique (apenas uma vez)
+const unlockAudioOnce = () => { sfx.unlock(); };
+['click', 'touchstart', 'touchend', 'pointerdown', 'keydown'].forEach(evt => {
+  window.addEventListener(evt, unlockAudioOnce, { capture: true, passive: true, once: true });
 });
 
 

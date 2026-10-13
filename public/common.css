@@ -1,8 +1,8 @@
 :root {
   --bg: #05030a;
   --bg2: #0e061a;
-  --card: rgba(18, 10, 32, 0.65);
-  --card-border: rgba(168, 85, 247, 0.22);
+  --card: rgba(18, 10, 32, 0.85);
+  --card-border: rgba(168, 85, 247, 0.25);
   --text: #f5f3ff;
   --muted: #9589a8;
   --violet: #8a2be2;
@@ -88,60 +88,57 @@ body {
 .bg i {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: .22;
+  opacity: .75;
   pointer-events: none;
-  will-change: transform;
   transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 .bg i:nth-child(1) {
-  width: 50vmax; height: 38vmax; background: radial-gradient(circle, #6b21a8 0%, #4c1d95 70%);
+  width: 50vmax; height: 38vmax;
+  background: radial-gradient(circle, rgba(107, 33, 168, 0.35) 0%, rgba(76, 29, 149, 0.15) 45%, transparent 70%);
   top: -10vmax; left: 10%;
   animation: movePurple1 28s ease-in-out infinite alternate;
 }
 .bg i:nth-child(2) {
-  width: 42vmax; height: 42vmax; background: radial-gradient(circle, #4338ca 0%, #3b0764 70%);
+  width: 42vmax; height: 42vmax;
+  background: radial-gradient(circle, rgba(67, 56, 202, 0.28) 0%, rgba(59, 7, 100, 0.12) 45%, transparent 70%);
   bottom: -15vmax; right: -5vmax;
-  opacity: .18;
   animation: movePurple2 34s ease-in-out infinite alternate;
 }
 .bg i:nth-child(3) {
-  width: 35vmax; height: 35vmax; background: radial-gradient(circle, #7e22ce 0%, #581c87 70%);
+  width: 35vmax; height: 35vmax;
+  background: radial-gradient(circle, rgba(126, 34, 206, 0.28) 0%, rgba(88, 28, 135, 0.12) 45%, transparent 70%);
   top: 30%; left: 40%;
-  opacity: .18;
   animation: movePurple3 24s ease-in-out infinite alternate;
 }
 
 @media (max-width: 768px) {
   .bg i {
     animation: none !important;
-    filter: blur(40px) !important;
     transform: translate3d(0, 0, 0) !important;
   }
   .card {
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
   }
 }
 
 @keyframes movePurple1 {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(25vmax, 15vmax) scale(1.15); }
-  66% { transform: translate(-15vmax, 25vmax) scale(0.9); }
-  100% { transform: translate(10vmax, -5vmax) scale(1.1); }
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(15vmax, 10vmax, 0); }
+  100% { transform: translate3d(-10vmax, 18vmax, 0); }
 }
 
 @keyframes movePurple2 {
-  0% { transform: translate(0, 0) scale(1); }
-  40% { transform: translate(-30vmax, -20vmax) scale(1.2); }
-  70% { transform: translate(10vmax, -35vmax) scale(0.85); }
-  100% { transform: translate(-15vmax, 10vmax) scale(1.05); }
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-18vmax, -12vmax, 0); }
+  100% { transform: translate3d(10vmax, -18vmax, 0); }
 }
 
 @keyframes movePurple3 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-25vmax, -15vmax) scale(1.25); }
-  100% { transform: translate(20vmax, 18vmax) scale(0.95); }
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-15vmax, -10vmax, 0); }
+  100% { transform: translate3d(14vmax, 12vmax, 0); }
 }
 
 h1, h2, h3 { line-height: 1.1; letter-spacing: -.01em; }
@@ -149,7 +146,7 @@ h1, h2, h3 { line-height: 1.1; letter-spacing: -.01em; }
 .grad { background: linear-gradient(110deg, #ffffff 0%, #c084fc 50%, #38bdf8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 .card { background: var(--card); border: 1px solid var(--card-border); border-radius: 1.35rem;
-  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 16px 50px rgba(0,0,0,.65), 0 0 35px rgba(138,43,226,.18); }
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 16px 50px rgba(0,0,0,.65), 0 0 35px rgba(138,43,226,.18); }
 
 /* Logo com cantos arredondados suavizados */
 .be-logo, .be-logo-sm, .be-logo-lg {

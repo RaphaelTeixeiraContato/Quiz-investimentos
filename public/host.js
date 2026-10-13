@@ -182,7 +182,7 @@
       case 'question': c.classList.add('hidden'); return;
       case 'reveal': 
         if (s.reveal && s.reveal.isLast) { label = 'Ver pódio 🏆'; } 
-        else { c.classList.add('hidden'); return; }
+        else { label = 'Próxima pergunta ▶'; }
         break;
       case 'podium': 
         c.classList.add('hidden'); 

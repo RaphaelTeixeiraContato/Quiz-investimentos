@@ -51,20 +51,19 @@
       background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
     }
 
-    /* Orbes de luz roxa suave e profundas */
+    /* Orbes de luz roxa suave e profundas otimizados */
     .bg i {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.22;
+      opacity: 0.75;
       pointer-events: none;
-      will-change: transform;
       transform: translate3d(0, 0, 0);
+      will-change: transform;
     }
     .bg i:nth-child(1) {
       width: 50vmax;
       height: 38vmax;
-      background: radial-gradient(circle, #6b21a8 0%, #4c1d95 70%);
+      background: radial-gradient(circle, rgba(107, 33, 168, 0.35) 0%, rgba(76, 29, 149, 0.15) 45%, transparent 70%);
       top: -10vmax;
       left: 10%;
       animation: movePurple1 28s ease-in-out infinite alternate;
@@ -72,26 +71,23 @@
     .bg i:nth-child(2) {
       width: 42vmax;
       height: 42vmax;
-      background: radial-gradient(circle, #4338ca 0%, #3b0764 70%);
+      background: radial-gradient(circle, rgba(67, 56, 202, 0.28) 0%, rgba(59, 7, 100, 0.12) 45%, transparent 70%);
       bottom: -15vmax;
       right: -5vmax;
-      opacity: 0.18;
       animation: movePurple2 34s ease-in-out infinite alternate;
     }
     .bg i:nth-child(3) {
       width: 35vmax;
       height: 35vmax;
-      background: radial-gradient(circle, #7e22ce 0%, #581c87 70%);
+      background: radial-gradient(circle, rgba(126, 34, 206, 0.28) 0%, rgba(88, 28, 135, 0.12) 45%, transparent 70%);
       top: 30%;
       left: 40%;
-      opacity: 0.18;
       animation: movePurple3 24s ease-in-out infinite alternate;
     }
 
     @media (max-width: 768px) {
       .bg i {
         animation: none !important;
-        filter: blur(40px) !important;
         transform: translate3d(0, 0, 0) !important;
       }
     }
@@ -148,7 +144,7 @@
     }
     
     .role-card {
-      background: rgba(18, 10, 32, 0.78);
+      background: rgba(18, 10, 32, 0.88);
       border: 1.5px solid rgba(168, 85, 247, 0.35);
       border-radius: 1.5rem;
       padding: clamp(2rem, 4.5vh, 3.2rem) 1.8rem;
@@ -156,14 +152,13 @@
       flex-direction: column;
       align-items: center;
       text-decoration: none;
-      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-                  border-color 0.25s ease,
-                  box-shadow 0.25s ease,
-                  opacity 0.25s ease,
-                  filter 0.25s ease,
-                  background 0.25s ease;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                  border-color 0.2s ease,
+                  box-shadow 0.2s ease,
+                  opacity 0.2s ease,
+                  background 0.2s ease;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(138, 43, 226, 0.15);
       animation: fadeUp 0.6s ease 0.2s both;
       cursor: pointer;
@@ -187,23 +182,22 @@
       transform: translateY(-8px) scale(1.03);
       border-color: rgba(192, 132, 252, 0.9);
       box-shadow: 0 22px 50px rgba(138, 43, 226, 0.4), inset 0 0 30px rgba(138, 43, 226, 0.2);
-      background: rgba(26, 12, 46, 0.9);
+      background: rgba(26, 12, 46, 0.95);
     }
     .role-card:hover::before {
       opacity: 1;
     }
 
-    /* Estado ativo ao clicar (micro-animação de clique sem travar a tela) */
+    /* Estado ativo ao clicar (micro-animação de clique instantânea e fluida) */
     .role-card.selected {
-      transform: scale(1.05) translateY(-8px) !important;
+      transform: scale(1.04) translateY(-6px) !important;
       border-color: #00f5d4 !important;
-      box-shadow: 0 0 40px rgba(0, 245, 212, 0.55), 0 15px 45px rgba(0, 0, 0, 0.8) !important;
-      background: rgba(24, 12, 44, 0.95) !important;
+      box-shadow: 0 0 35px rgba(0, 245, 212, 0.5), 0 15px 45px rgba(0, 0, 0, 0.8) !important;
+      background: rgba(24, 12, 44, 0.98) !important;
     }
     .role-card.dimmed {
       opacity: 0.45 !important;
       transform: scale(0.97) !important;
-      filter: blur(1px) !important;
     }
     
     .role-icon {
