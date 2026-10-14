@@ -91,54 +91,34 @@ body {
   opacity: .75;
   pointer-events: none;
   transform: translate3d(0, 0, 0);
-  will-change: transform;
 }
 .bg i:nth-child(1) {
   width: 50vmax; height: 38vmax;
   background: radial-gradient(circle, rgba(107, 33, 168, 0.35) 0%, rgba(76, 29, 149, 0.15) 45%, transparent 70%);
   top: -10vmax; left: 10%;
-  animation: movePurple1 28s ease-in-out infinite alternate;
 }
 .bg i:nth-child(2) {
   width: 42vmax; height: 42vmax;
   background: radial-gradient(circle, rgba(67, 56, 202, 0.28) 0%, rgba(59, 7, 100, 0.12) 45%, transparent 70%);
   bottom: -15vmax; right: -5vmax;
-  animation: movePurple2 34s ease-in-out infinite alternate;
 }
 .bg i:nth-child(3) {
   width: 35vmax; height: 35vmax;
   background: radial-gradient(circle, rgba(126, 34, 206, 0.28) 0%, rgba(88, 28, 135, 0.12) 45%, transparent 70%);
   top: 30%; left: 40%;
-  animation: movePurple3 24s ease-in-out infinite alternate;
+}
+
+.players-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(14, 8, 25, 0.94) !important;
 }
 
 @media (max-width: 768px) {
-  .bg i {
-    animation: none !important;
-    transform: translate3d(0, 0, 0) !important;
-  }
   .card {
     backdrop-filter: blur(8px) !important;
     -webkit-backdrop-filter: blur(8px) !important;
   }
-}
-
-@keyframes movePurple1 {
-  0% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(15vmax, 10vmax, 0); }
-  100% { transform: translate3d(-10vmax, 18vmax, 0); }
-}
-
-@keyframes movePurple2 {
-  0% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(-18vmax, -12vmax, 0); }
-  100% { transform: translate3d(10vmax, -18vmax, 0); }
-}
-
-@keyframes movePurple3 {
-  0% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(-15vmax, -10vmax, 0); }
-  100% { transform: translate3d(14vmax, 12vmax, 0); }
 }
 
 h1, h2, h3 { line-height: 1.1; letter-spacing: -.01em; }
