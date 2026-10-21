@@ -337,6 +337,71 @@
     } catch (e) { toast(e.message, 'err'); }
   });
 
+  if ($('btn-export-json')) {
+    $('btn-export-json').addEventListener('click', () => {
+      try {
+        let exportQuestions = questions;
+        try { exportQuestions = collect(); } catch (_) { /* se houver campo incompleto, exporta o estado atual */ }
+        const exportData = {
+          id: currentQuizId,
+          title: currentQuizTitle || 'Prova',
+          questions: exportQuestions
+        };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const safeTitle = (currentQuizTitle || 'quiz').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9_-]/g, '_');
+        a.download = `quiz_${safeTitle}_backup.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast('Backup baixado com sucesso no seu computador! 📥', 'ok');
+      } catch (err) {
+        toast('Erro ao exportar: ' + err.message, 'err');
+      }
+    });
+  }
+
+  if ($('btn-import-json')) {
+    $('btn-import-json').addEventListener('click', () => {
+      const input = $('file-import-json');
+      if (input) input.click();
+    });
+  }
+
+  if ($('file-import-json')) {
+    $('file-import-json').addEventListener('change', e => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = evt => {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          let importedQuestions = [];
+          if (Array.isArray(parsed)) {
+            importedQuestions = parsed;
+          } else if (parsed && Array.isArray(parsed.questions)) {
+            importedQuestions = parsed.questions;
+            if (parsed.title) currentQuizTitle = parsed.title;
+          } else {
+            throw new Error('Arquivo JSON com formato inválido. Deve conter uma lista ou objeto de prova.');
+          }
+          questions = importedQuestions;
+          markDirty();
+          renderQuizzesBar();
+          render();
+          toast('Perguntas importadas! Clique em "Salvar configurações" para salvar no servidor. ✅', 'ok');
+        } catch (err) {
+          toast('Erro ao importar arquivo: ' + err.message, 'err');
+        }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
+    });
+  }
+
   window.addEventListener('beforeunload', e => { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
 
   if (password) enter(password); else setTimeout(() => $('password').focus(), 50);

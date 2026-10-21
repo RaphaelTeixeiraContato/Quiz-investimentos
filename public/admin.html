@@ -57,8 +57,11 @@
         <div class="summary-pill" id="summary"></div>
       </div>
 
-      <!-- Linha 3: Botões de Ação Restaurar (Azul) e Salvar Configurações (Verde) -->
+      <!-- Linha 3: Botões de Ação Restaurar, Backup, Importar e Salvar Configurações -->
       <div class="bar-row bottom-row">
+        <input type="file" id="file-import-json" accept=".json" style="display:none">
+        <button class="btn ghost icon-pill-btn" id="btn-import-json" type="button" title="Importar arquivo de perguntas (.json) do seu computador">📤 Importar (.json)</button>
+        <button class="btn ghost icon-pill-btn" id="btn-export-json" type="button" title="Baixar backup das perguntas em seu computador">📥 Baixar Backup (.json)</button>
         <button class="btn btn-reset-blue" id="btn-reset" type="button" disabled title="Restaurar as configurações salvas desta prova">↺ Restaurar</button>
         <button class="btn btn-save-green" id="btn-save" type="button" disabled title="Salvar as alterações atuais como novo padrão">💾 Salvar configurações</button>
       </div>
