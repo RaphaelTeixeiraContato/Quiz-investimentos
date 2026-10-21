@@ -36,43 +36,65 @@ const MAX_NAME = 16;
 /* Quizzes / Provas (persistência + validação)                        */
 /* ------------------------------------------------------------------ */
 
-function sanitizeQuestions(input) {
-  if (!Array.isArray(input) || input.length < 1 || input.length > 100) {
-    throw new Error('Envie entre 1 e 100 perguntas.');
+function sanitizeQuestions(input, strict = false) {
+  if (!Array.isArray(input)) {
+    if (strict) throw new Error('Envie uma lista de perguntas.');
+    return [];
   }
-  return input.map((q, i) => {
+  const result = [];
+  for (let i = 0; i < input.length; i++) {
+    const q = input[i];
     const n = i + 1;
     const text = String(q && q.text || '').trim().slice(0, 300);
-    if (!text) throw new Error(`Pergunta ${n}: texto vazio.`);
+    if (!text) {
+      if (strict) throw new Error(`Pergunta ${n}: texto vazio.`);
+      continue;
+    }
     const options = (Array.isArray(q.options) ? q.options : [])
       .map(o => String(o || '').trim().slice(0, 120))
       .filter(Boolean);
-    if (options.length < 2 || options.length > 4) {
-      throw new Error(`Pergunta ${n}: use de 2 a 4 alternativas preenchidas.`);
+    if (options.length < 2) {
+      if (strict) throw new Error(`Pergunta ${n}: use de 2 a 4 alternativas preenchidas.`);
+      continue;
     }
-    const correct = Number.parseInt(q.correct, 10);
+    let correct = Number.parseInt(q.correct, 10);
     if (!(correct >= 0 && correct < options.length)) {
-      throw new Error(`Pergunta ${n}: marque a alternativa correta.`);
+      if (strict) throw new Error(`Pergunta ${n}: marque a alternativa correta.`);
+      correct = 0;
     }
     let time = Number.parseInt(q.time, 10);
     if (!Number.isFinite(time)) time = 20;
     time = Math.min(120, Math.max(5, time));
     const explanation = String(q.explanation || '').trim().slice(0, 400);
     const waitingTip = String(q.waitingTip || q.tip || '').trim().slice(0, 400);
-    return { text, options, correct, time, explanation, waitingTip };
-  });
+    result.push({ text, options: options.slice(0, 4), correct, time, explanation, waitingTip });
+  }
+  if (strict && result.length < 1) {
+    throw new Error('Envie entre 1 e 100 perguntas válidas.');
+  }
+  return result;
 }
 
 function loadQuizzes() {
   try {
     if (fs.existsSync(QUIZZES_FILE)) {
-      const raw = JSON.parse(fs.readFileSync(QUIZZES_FILE, 'utf8'));
+      let raw = JSON.parse(fs.readFileSync(QUIZZES_FILE, 'utf8'));
+      // Se for um único objeto de quiz, envelopa em array
+      if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+        if (Array.isArray(raw.questions)) {
+          raw = [raw];
+        }
+      }
+      // Se for um array direto de perguntas
+      if (Array.isArray(raw) && raw.length > 0 && raw[0] && raw[0].text && !raw[0].questions) {
+        raw = [{ id: 'quiz_1', title: 'Prova de Investimentos', questions: raw }];
+      }
       if (Array.isArray(raw) && raw.length > 0) {
-        return raw.map(qz => ({
-          id: String(qz.id || 'quiz_1'),
-          title: String(qz.title || 'Prova 1 - Turma A').trim(),
-          questions: sanitizeQuestions(qz.questions || []),
-          savedCheckpoint: Array.isArray(qz.savedCheckpoint) && qz.savedCheckpoint.length ? sanitizeQuestions(qz.savedCheckpoint) : sanitizeQuestions(qz.questions || [])
+        return raw.map((qz, idx) => ({
+          id: String(qz.id || `quiz_${idx + 1}`),
+          title: String(qz.title || `Prova ${idx + 1}`).trim(),
+          questions: sanitizeQuestions(qz.questions || [], false),
+          savedCheckpoint: sanitizeQuestions(qz.savedCheckpoint || qz.questions || [], false)
         }));
       }
     }
@@ -81,15 +103,17 @@ function loadQuizzes() {
   }
   let defaultQs = [];
   try {
-    defaultQs = sanitizeQuestions(JSON.parse(fs.readFileSync(DEFAULT_QUESTIONS_FILE, 'utf8')));
+    defaultQs = sanitizeQuestions(JSON.parse(fs.readFileSync(DEFAULT_QUESTIONS_FILE, 'utf8')), false);
   } catch (_) {
-    defaultQs = [{ text: 'O que é investimento?', options: ['Aplicar dinheiro com expectativa de rendimento', 'Gastar tudo em consumo imediato'], correct: 0, time: 20, explanation: '' }];
+    defaultQs = [{ text: 'O que é investimento?', options: ['Aplicar dinheiro com expectativa de rendimento', 'Gastar tudo em consumo imediato'], correct: 0, time: 20, explanation: '', waitingTip: '' }];
   }
   const initial = [
     { id: 'quiz_1', title: 'Prova 1 - Turma A', questions: JSON.parse(JSON.stringify(defaultQs)), savedCheckpoint: JSON.parse(JSON.stringify(defaultQs)) },
     { id: 'quiz_2', title: 'Prova 2 - Turma B', questions: JSON.parse(JSON.stringify(defaultQs)), savedCheckpoint: JSON.parse(JSON.stringify(defaultQs)) }
   ];
-  saveQuizzes(initial);
+  if (!fs.existsSync(QUIZZES_FILE)) {
+    saveQuizzes(initial);
+  }
   return initial;
 }
 

@@ -1,242 +1,132 @@
 [
   {
-    "text": "O que significa \"investir\"?",
+    "text": "Antes de começar a investir, o que devo fazer?",
     "options": [
-      "Guardar o dinheiro embaixo do colchão",
-      "Usar o dinheiro de hoje para ele render e crescer no futuro",
-      "Gastar tudo em compras que dão prazer",
-      "Pedir um empréstimo para comprar algo"
+      "Procurar o investimento que oferece o maior retorno.",
+      "Seguir as recomendações de influenciadores financeiros.",
+      "Organizar minha vida financeira e definir meus objetivos.",
+      "Descobrir quais são os investimentos mais rentáveis do momento."
+    ],
+    "correct": 2,
+    "time": 30,
+    "explanation": "Antes de investir, precisamos entender quanto dinheiro recebemos, quanto gastamos e quanto podemos guardar. Com essa organização, conseguimos definir objetivos e escolher investimentos que façam sentido para nossa realidade.",
+    "waitingTip": "Investir não é fazer uma aposta, é participar do crescimento de boas empresas e do país a longo prazo."
+  },
+  {
+    "text": "O que significa investir?",
+    "options": [
+      "Guardar dinheiro em casa, sem nenhum rendimento.",
+      "Colocar dinheiro em sites de apostas para tentar multiplicá-lo.",
+      "Aplicar dinheiro em ativos com expectativa de obter retorno, assumindo os riscos correspondentes.",
+      "Emprestar dinheiro a amigos sem combinar as condições de devolução."
+    ],
+    "correct": 2,
+    "time": 30,
+    "explanation": "Investir é aplicar recursos com a expectativa de obter algum retorno ao longo do tempo. Dependendo do investimento escolhido, existem diferentes níveis de risco, liquidez e rentabilidade, e nenhum retorno elevado deve ser considerado como garantido.",
+    "waitingTip": "A regra básica da diversificação: Nunca coloque todos os ativos na mesma \"cesta\" de investimentos."
+  },
+  {
+    "text": "Você pretende fazer uma viagem com seus amigos daqui a 2 anos e decide começar a guardar dinheiro agora. Como esse objetivo é classificado?",
+    "options": [
+      "Longo prazo, pois envolve acumular dinheiro por muitos anos.",
+      "Médio prazo, pois o objetivo está entre 1 e 5 anos.",
+      "Curto prazo, pois qualquer objetivo inferior a 5 anos é de curto prazo.",
+      "Reserva de emergência, pois o dinheiro poderá ser usado a qualquer momento."
     ],
     "correct": 1,
-    "time": 20,
-    "explanation": "Investir é colocar o dinheiro para trabalhar por você: ele rende e cresce com o tempo."
+    "time": 30,
+    "explanation": "Um objetivo com prazo de dois anos é considerado de médio prazo segundo a classificação utilizada na apresentação. Definir quando precisaremos do dinheiro ajuda a escolher investimentos compatíveis com esse período.",
+    "waitingTip": "Conhecimento é o ativo mais valioso: Quem estuda o mercado toma decisões muito mais seguras!"
   },
   {
-    "text": "Antes de começar a investir, qual é o primeiro passo?",
+    "text": "Qual é a principal finalidade de uma reserva de emergência?",
     "options": [
-      "Seguir a dica de um influenciador",
-      "Comprar o que está subindo mais rápido",
-      "Organizar o orçamento e definir seus objetivos",
-      "Pedir dinheiro emprestado para investir mais"
-    ],
-    "correct": 2,
-    "time": 20,
-    "explanation": "Sem saber quanto sobra e para onde você quer ir, não dá para escolher o investimento certo."
-  },
-  {
-    "text": "O que acontece com o dinheiro parado quando os preços sobem (inflação)?",
-    "options": [
-      "Ele ganha mais valor sozinho",
-      "Nada, continua igual",
-      "Ele multiplica por dois",
-      "Ele perde poder de compra"
-    ],
-    "correct": 3,
-    "time": 20,
-    "explanation": "Com a inflação, o mesmo dinheiro compra cada vez menos coisas. Investir ajuda a se proteger disso."
-  },
-  {
-    "text": "Para que serve a reserva de emergência?",
-    "options": [
-      "Para comprar o celular novo",
-      "Para imprevistos, como doença ou perda de renda",
-      "Para fazer uma viagem de férias",
-      "Para ganhar muito dinheiro rápido"
-    ],
-    "correct": 1,
-    "time": 20,
-    "explanation": "A reserva é seu \"guarda-chuva\": protege você de imprevistos sem precisar de empréstimo."
-  },
-  {
-    "text": "Qual é o valor recomendado para a reserva de emergência?",
-    "options": [
-      "1 semana de despesas",
-      "Exatamente R$ 1.000",
-      "Tudo o que você ganha no ano",
-      "Pelo menos 6 meses das suas despesas mensais"
-    ],
-    "correct": 3,
-    "time": 20,
-    "explanation": "Muitos especialistas recomendam de 6 a 12 meses do seu custo de vida mensal."
-  },
-  {
-    "text": "Onde a reserva de emergência deve ficar?",
-    "options": [
-      "Em ações, para render mais",
-      "Em um investimento que você só consegue resgatar em 5 anos",
-      "Em um investimento seguro e com liquidez diária",
-      "Em criptomoedas"
-    ],
-    "correct": 2,
-    "time": 20,
-    "explanation": "Ela precisa ser segura e estar disponível a qualquer momento: segurança e liquidez diária."
-  },
-  {
-    "text": "O que é \"liquidez\"?",
-    "options": [
-      "O quanto o investimento paga de imposto",
-      "O tamanho da empresa que emitiu o investimento",
-      "A facilidade de transformar o investimento em dinheiro",
-      "O nome do banco onde o dinheiro está"
-    ],
-    "correct": 2,
-    "time": 20,
-    "explanation": "Liquidez é a rapidez e a facilidade para resgatar seu dinheiro sem perder valor."
-  },
-  {
-    "text": "Em geral, quanto maior o retorno possível de um investimento...",
-    "options": [
-      "Menor o risco",
-      "Nunca existe risco",
-      "O risco não tem relação com o retorno",
-      "Maior o risco"
-    ],
-    "correct": 3,
-    "time": 20,
-    "explanation": "Risco e retorno andam juntos: quem busca ganhar mais precisa aceitar mais oscilação e chance de perda."
-  },
-  {
-    "text": "Você investe R$ 1.000 a 10% ao ano, com juros compostos. Quanto terá depois de 2 anos?",
-    "options": [
-      "R$ 1.100",
-      "R$ 1.200",
-      "R$ 1.020",
-      "R$ 1.210"
+      "Financiar a aposentadoria.",
+      "Buscar a maior rentabilidade possível.",
+      "Pagar compras por impulso e passeios caros",
+      "Cobrir gastos inesperados e necessários, como consertar o notebook que você usa para estudar."
     ],
     "correct": 3,
     "time": 30,
-    "explanation": "No 1º ano: R$ 1.100. No 2º, os 10% incidem sobre R$ 1.100 (juros sobre juros) = R$ 1.210."
+    "explanation": "A reserva de emergência serve para enfrentar situações inesperadas sem precisar recorrer a empréstimos ou vender investimentos de longo prazo em um momento desfavorável. Ela oferece segurança financeira quando algo foge do planejado.",
+    "waitingTip": "Renda fixa traz segurança e liquidez, enquanto renda variável busca potencial de retorno no futuro."
   },
   {
-    "text": "Quem se beneficia mais dos juros compostos?",
+    "text": "Como devemos dimensionar uma reserva de emergência?",
     "options": [
-      "Quem começa cedo e deixa o dinheiro render por muito tempo",
-      "Quem retira o dinheiro todo mês",
-      "Quem só investe quando está com muito dinheiro",
-      "Quem guarda o dinheiro em casa"
+      "Considerando os gastos essenciais mensais e por quanto tempo precisaríamos nos manter sem renda.",
+      "Investindo todo o dinheiro disponível em ativos de alto risco.",
+      "Escolhendo um valor apenas com base na rentabilidade desejada.",
+      "Guardando sempre o equivalente a um mês de despesas, independentemente da situação."
     ],
     "correct": 0,
-    "time": 20,
-    "explanation": "O tempo é o maior aliado: quanto mais cedo você começa, maior a \"bola de neve\"."
+    "time": 30,
+    "explanation": "O valor da reserva depende das despesas essenciais e da estabilidade da renda de cada pessoa. Uma referência comum é acumular o equivalente a vários meses de gastos, ajustando esse período conforme as necessidades e os riscos de ficar sem renda.",
+    "waitingTip": "Deixar dinheiro parado na conta corrente é deixar de ganhar dinheiro todo os meses."
   },
   {
-    "text": "\"Não coloque todos os ovos na mesma cesta\" é um ditado sobre...",
+    "text": "Uma pessoa tem perfil conservador. Qual característica deve priorizar ao escolher seus investimentos?",
     "options": [
-      "Economizar em alimentos",
-      "Diversificação dos investimentos",
-      "Investir tudo em uma única empresa",
-      "Gastar menos no mercado"
+      "Buscar o maior retorno possível, mesmo aceitando grandes perdas.",
+      "Priorizar segurança e liquidez, avaliando os riscos de cada investimento.",
+      "Comprar ações de empresas conhecidas, sem analisar os riscos.",
+      "Investir exclusivamente em criptomoedas."
     ],
     "correct": 1,
-    "time": 20,
-    "explanation": "Diversificar é dividir o dinheiro em diferentes investimentos para diminuir o risco."
+    "time": 30,
+    "explanation": "O investidor conservador costuma priorizar a preservação do patrimônio e a possibilidade de acessar o dinheiro quando necessário. Isso não significa ausência total de riscos, mas sim preferência por investimentos compatíveis com uma menor tolerância a perdas.",
+    "waitingTip": "No mercado financeiro, maior rentabilidade sempre traz um risco maior, tome cuidado com promessas de dinheiro fácil e rápido."
   },
   {
-    "text": "Qual destes é um investimento de renda fixa?",
+    "text": "Quando uma pessoa investe em um CDB, para quem ela está emprestando dinheiro?",
     "options": [
-      "Ações de uma empresa",
-      "Tesouro Selic",
-      "Bitcoin",
-      "Fundo imobiliário"
+      "Para o governo.",
+      "Para uma empresa não financeira.",
+      "Para os acionistas de uma empresa.",
+      "Para um banco ou outra instituição financeira emissora."
     ],
-    "correct": 1,
-    "time": 20,
-    "explanation": "O Tesouro Selic é um título público de renda fixa, conhecido pela segurança e liquidez diária."
+    "correct": 3,
+    "time": 30,
+    "explanation": "O CDB é um Certificado de Depósito Bancário. Ao investir nele, você empresta dinheiro à instituição financeira emissora, que se compromete a devolver o valor conforme as condições contratadas, incluindo a remuneração prevista, possui a garantia do FGC.",
+    "waitingTip": "O tempo é o melhor amigo de todo investidor: começar cedo com pouco vale mais do que começar tarde e com muito."
   },
   {
-    "text": "No Tesouro Direto, você empresta dinheiro para quem?",
+    "text": "Qual das opções abaixo pode contar com a proteção do FGC, desde que cumpra as condições da garantia?",
     "options": [
-      "Para o Governo Federal",
-      "Para o banco da sua cidade",
-      "Para uma empresa privada",
-      "Para um amigo"
+      "Um CDB emitido por uma instituição associada ao FGC.",
+      "Um título público do Tesouro Direto.",
+      "Uma cota de fundo de investimento.",
+      "Uma debênture emitida por uma empresa."
     ],
     "correct": 0,
-    "time": 20,
-    "explanation": "Ao comprar um título do Tesouro, você empresta ao governo, que paga juros por isso."
+    "time": 30,
+    "explanation": "O Fundo Garantidor de Créditos protege determinados produtos financeiros elegíveis, como CDBs, respeitando limites e regras específicas. Essa garantia não se aplica a todos os investimentos e não deve ser confundida com uma promessa de rentabilidade ou segurança.",
+    "waitingTip": "Pequenos cortes em gastos desnecessários hoje podem se transformar em um grande patrimônio amanhã."
   },
   {
-    "text": "Ao comprar uma ação, o que você passa a ser?",
+    "text": "Qual das opções abaixo representa um investimento que, em geral, tem baixo risco de crédito?",
     "options": [
-      "Funcionário da empresa",
-      "Credor do governo",
-      "Cliente da empresa",
-      "Sócio de uma pequena parte da empresa"
+      "Uma debênture emitida por uma empresa com dificuldades financeiras.",
+      "Ações de uma única empresa.",
+      "Uma criptomoeda com alta volatilidade.",
+      "Um título público federal mantido até o vencimento, considerando o risco de crédito."
     ],
     "correct": 3,
-    "time": 20,
-    "explanation": "Ação é uma pequena fatia de uma empresa. Se ela vai bem, você pode ganhar junto, e vice-versa."
+    "time": 30,
+    "explanation": "Os títulos públicos federais têm como devedor o governo federal e, em geral, apresentam baixo risco de crédito em comparação com títulos de empresas privadas. Ainda assim, podem ocorrer oscilações de preço, especialmente quando o investidor vende o título antes do vencimento.",
+    "waitingTip": "A reserva de emergência é o seu escudo financeiro, deve cobrir de 6 a 12 meses das suas despesas fixas."
   },
   {
-    "text": "O FGC protege seu dinheiro em instituições financeiras até qual valor, por CPF?",
+    "text": "Qual afirmação descreve melhor a relação entre risco e retorno nos investimentos?",
     "options": [
-      "R$ 250 mil",
-      "R$ 1.000",
-      "R$ 10 milhões",
-      "Não protege nada"
+      "Quanto maior o retorno de um investimento, menor será o seu risco.",
+      "Investimentos de maior risco podem oferecer retornos maiores, mas também podem gerar perdas maiores.",
+      "Todo investimento de renda fixa é livre de riscos.",
+      "Investimentos com maior rentabilidade passada sempre terão maior rentabilidade futura."
     ],
     "correct": 0,
-    "time": 25,
-    "explanation": "O Fundo Garantidor de Créditos cobre até R$ 250 mil por CPF, por instituição, em alguns tipos de investimento."
-  },
-  {
-    "text": "É possível começar a investir com pouco dinheiro?",
-    "options": [
-      "Não, só quem tem muito dinheiro",
-      "Só depois dos 40 anos",
-      "Só com no mínimo R$ 100 mil",
-      "Sim, dá para começar com poucas dezenas de reais"
-    ],
-    "correct": 3,
-    "time": 20,
-    "explanation": "No Tesouro Direto, por exemplo, dá para começar com cerca de R$ 30. O importante é começar."
-  },
-  {
-    "text": "O que significa \"pagar-se primeiro\"?",
-    "options": [
-      "Gastar o salário todo no primeiro dia",
-      "Pagar as contas antes de tudo",
-      "Separar uma parte da renda para investir assim que receber",
-      "Pedir adiantamento do salário"
-    ],
-    "correct": 2,
-    "time": 20,
-    "explanation": "Primeiro você guarda e investe a sua parte, depois usa o que sobrou. Assim vira hábito."
-  },
-  {
-    "text": "Um perfil de investidor \"conservador\" é aquele que...",
-    "options": [
-      "Gosta de grandes riscos",
-      "Prioriza a segurança, mesmo ganhando menos",
-      "Investe tudo em uma só ação",
-      "Não investe nunca"
-    ],
-    "correct": 1,
-    "time": 20,
-    "explanation": "O conservador prefere segurança e estabilidade, mesmo que isso signifique um retorno menor."
-  },
-  {
-    "text": "Alguém promete \"retorno altíssimo, rápido e garantido\". O que você deve fazer?",
-    "options": [
-      "Investir tudo agora antes que acabe",
-      "Convidar os amigos para entrar também",
-      "Desconfiar: promessa fácil costuma ser golpe",
-      "Passar sua senha para a pessoa investir por você"
-    ],
-    "correct": 2,
-    "time": 20,
-    "explanation": "Não existe retorno alto e garantido ao mesmo tempo. Desconfie, pesquise e nunca passe sua senha."
-  },
-  {
-    "text": "Onde se compra ações na Bolsa de Valores (B3)?",
-    "options": [
-      "Em qualquer loja de bairro",
-      "Direto no portão da bolsa",
-      "Por mensagem de desconhecidos",
-      "Por meio de uma corretora de valores"
-    ],
-    "correct": 3,
-    "time": 20,
-    "explanation": "As corretoras são as intermediárias entre você e a Bolsa. Escolha uma regulada e confiável."
+    "time": 30,
+    "explanation": "Em geral, buscar retornos maiores envolve aceitar determinados riscos adicionais. Isso não significa que assumir mais risco garantirá ganhos maiores: o investidor também pode perder dinheiro, por isso precisa avaliar sua tolerância ao risco antes de investir.",
+    "waitingTip": "Os juros compostos são considerados a 8ª maravilha do mundo: Multiplicando o seu dinheiro ao longo do tempo!"
   }
 ]

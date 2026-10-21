@@ -26,7 +26,9 @@
       $('editor').classList.remove('hidden');
 
       if (quizzesList.length) {
-        currentQuizId = quizzesList[0].id;
+        const savedId = sessionStorage.getItem('quiz-admin-active-id');
+        const exists = quizzesList.some(q => q.id === savedId);
+        currentQuizId = exists ? savedId : quizzesList[0].id;
         await selectQuiz(currentQuizId);
       }
     } catch (e) {
@@ -43,9 +45,14 @@
       return;
     }
     currentQuizId = quizId;
+    sessionStorage.setItem('quiz-admin-active-id', quizId);
     const data = await api('GET', `/api/quizzes/${quizId}`);
     currentQuizTitle = data.title || '';
-    questions = data.questions || [];
+    questions = (data.questions || []).map(q => {
+      let opts = Array.isArray(q.options) ? q.options.slice() : [];
+      while (opts.length < 4) opts.push('');
+      return { ...q, options: opts };
+    });
     dirty = false;
     renderQuizzesBar();
     render();
@@ -135,8 +142,9 @@
 
   function cardHtml(q, i) {
     const letters = ['A', 'B', 'C', 'D'];
+    const options = Array.isArray(q && q.options) ? q.options : [];
     const opts = [0, 1, 2, 3].map(k => {
-      const v = q.options[k] || '';
+      const v = options[k] || '';
       return `<div class="opt-row opt-${k} ${q.correct === k ? 'is-correct' : ''}">
         <input class="radio" type="radio" name="c${i}" data-act="correct" data-i="${i}" data-k="${k}" ${q.correct === k ? 'checked' : ''} aria-label="Marcar opção ${letters[k]} como correta">
         ${shapeHtml(k)}
@@ -155,7 +163,7 @@
         </div>
       </div>
       <label class="field-label" for="qt-${i}">ENUNCIADO DA PERGUNTA</label>
-      <textarea id="qt-${i}" maxlength="300" data-act="text" data-i="${i}" rows="2" placeholder="Digite o enunciado da pergunta aqui...">${esc(q.text)}</textarea>
+      <textarea id="qt-${i}" maxlength="300" data-act="text" data-i="${i}" rows="2" placeholder="Digite o enunciado da pergunta aqui...">${esc(q && q.text ? q.text : '')}</textarea>
       <label class="field-label">ALTERNATIVAS (Marque a opção correta)</label>
       <div class="opts">${opts}</div>
       <div class="row2">
@@ -314,8 +322,20 @@
         title: currentQuizTitle || 'Sem título',
         questions: payloadQuestions
       });
-      questions = updated.questions;
+      questions = (updated.questions || []).map(q => {
+        let opts = Array.isArray(q.options) ? q.options.slice() : [];
+        while (opts.length < 4) opts.push('');
+        return { ...q, options: opts };
+      });
       currentQuizTitle = updated.title;
+      // Salva cópia local de segurança no navegador
+      try {
+        localStorage.setItem(`quiz-backup-${currentQuizId}`, JSON.stringify({
+          title: currentQuizTitle,
+          questions,
+          savedAt: new Date().toISOString()
+        }));
+      } catch (_) {}
       quizzesList = await api('GET', '/api/quizzes');
       dirty = false;
       renderQuizzesBar();
@@ -328,7 +348,11 @@
     if (!confirm('Restaurar para as configurações salvas anteriormente nesta prova?')) return;
     try {
       const res = await api('POST', `/api/quizzes/${currentQuizId}/reset`);
-      questions = res.questions;
+      questions = (res.questions || []).map(q => {
+        let opts = Array.isArray(q.options) ? q.options.slice() : [];
+        while (opts.length < 4) opts.push('');
+        return { ...q, options: opts };
+      });
       currentQuizTitle = res.title;
       dirty = false;
       renderQuizzesBar();
@@ -341,7 +365,7 @@
     $('btn-export-json').addEventListener('click', () => {
       try {
         let exportQuestions = questions;
-        try { exportQuestions = collect(); } catch (_) { /* se houver campo incompleto, exporta o estado atual */ }
+        try { exportQuestions = collect(); } catch (_) {}
         const exportData = {
           id: currentQuizId,
           title: currentQuizTitle || 'Prova',
@@ -371,6 +395,26 @@
     });
   }
 
+  function normalizeImportedQuestions(rawList) {
+    if (!Array.isArray(rawList)) return [];
+    return rawList.map(q => {
+      if (!q || typeof q !== 'object') return null;
+      let opts = [];
+      if (Array.isArray(q.options)) {
+        opts = q.options.map(o => String(o || ''));
+      }
+      while (opts.length < 4) opts.push('');
+      return {
+        text: String(q.text || '').trim(),
+        options: opts.slice(0, 4),
+        correct: Number.isInteger(q.correct) && q.correct >= 0 && q.correct < 4 ? q.correct : 0,
+        time: Math.min(120, Math.max(5, Number(q.time) || 20)),
+        explanation: String(q.explanation || '').trim(),
+        waitingTip: String(q.waitingTip || q.tip || '').trim()
+      };
+    }).filter(q => q && q.text);
+  }
+
   if ($('file-import-json')) {
     $('file-import-json').addEventListener('change', e => {
       const file = e.target.files && e.target.files[0];
@@ -379,20 +423,45 @@
       reader.onload = evt => {
         try {
           const parsed = JSON.parse(evt.target.result);
-          let importedQuestions = [];
-          if (Array.isArray(parsed)) {
-            importedQuestions = parsed;
-          } else if (parsed && Array.isArray(parsed.questions)) {
-            importedQuestions = parsed.questions;
-            if (parsed.title) currentQuizTitle = parsed.title;
-          } else {
-            throw new Error('Arquivo JSON com formato inválido. Deve conter uma lista ou objeto de prova.');
+          let targetTitle = '';
+          let rawQuestions = [];
+
+          // Caso 1: Array de quizzes (ex: quizzes.json original [ { id, title, questions: [...] } ])
+          if (Array.isArray(parsed) && parsed.length > 0 && Array.isArray(parsed[0].questions)) {
+            const matched = parsed.find(q => q.id === currentQuizId) || parsed[0];
+            targetTitle = matched.title || '';
+            rawQuestions = matched.questions;
           }
-          questions = importedQuestions;
+          // Caso 2: Array direto de perguntas [ { text, options: [...] }, ... ]
+          else if (Array.isArray(parsed)) {
+            rawQuestions = parsed;
+          }
+          // Caso 3: Objeto único com questions { title, questions: [...] }
+          else if (parsed && typeof parsed === 'object') {
+            if (Array.isArray(parsed.questions)) {
+              targetTitle = parsed.title || '';
+              rawQuestions = parsed.questions;
+            } else if (Array.isArray(parsed.quizzes) && parsed.quizzes.length > 0) {
+              const matched = parsed.quizzes.find(q => q.id === currentQuizId) || parsed.quizzes[0];
+              targetTitle = matched.title || '';
+              rawQuestions = matched.questions || [];
+            }
+          }
+
+          const imported = normalizeImportedQuestions(rawQuestions);
+          if (!imported.length) {
+            throw new Error('Nenhuma pergunta válida encontrada no arquivo JSON.');
+          }
+
+          questions = imported;
+          if (targetTitle) {
+            currentQuizTitle = targetTitle;
+            if ($('quiz-title-input')) $('quiz-title-input').value = currentQuizTitle;
+          }
           markDirty();
           renderQuizzesBar();
           render();
-          toast('Perguntas importadas! Clique em "Salvar configurações" para salvar no servidor. ✅', 'ok');
+          toast(`Sucesso! ${imported.length} perguntas importadas. Clique em "Salvar configurações" para gravar. ✅`, 'ok');
         } catch (err) {
           toast('Erro ao importar arquivo: ' + err.message, 'err');
         }
