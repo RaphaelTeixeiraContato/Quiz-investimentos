@@ -197,7 +197,12 @@ async function handleApi(req, res, pathname) {
     // Rotas de API protegidas
     if (!isAuthed(req)) return sendJson(res, 401, { error: 'Senha incorreta' });
 
-    // Rota GET /api/quizzes e POST /api/quizzes (criar nova prova)
+    // Rota GET /api/quizzes, GET /api/quizzes/all e POST /api/quizzes (criar nova prova)
+    if (pathname === '/api/quizzes/all' && req.method === 'GET') {
+      const quizzes = loadQuizzes();
+      return sendJson(res, 200, quizzes);
+    }
+
     if (pathname === '/api/quizzes' && req.method === 'GET') {
       const quizzes = loadQuizzes();
       return sendJson(res, 200, quizzes.map(q => ({ id: q.id, title: q.title, count: q.questions.length })));

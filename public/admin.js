@@ -388,6 +388,26 @@
     });
   }
 
+  if ($('btn-export-all-json')) {
+    $('btn-export-all-json').addEventListener('click', async () => {
+      try {
+        const allQuizzes = await api('GET', '/api/quizzes/all');
+        const blob = new Blob([JSON.stringify(allQuizzes, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'quizzes.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast('Arquivo "quizzes.json" com todas as provas baixado com sucesso! 📦', 'ok');
+      } catch (err) {
+        toast('Erro ao baixar todas as provas: ' + err.message, 'err');
+      }
+    });
+  }
+
   if ($('btn-import-json')) {
     $('btn-import-json').addEventListener('click', () => {
       const input = $('file-import-json');

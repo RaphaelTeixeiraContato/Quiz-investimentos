@@ -266,5 +266,273 @@
         "waitingTip": "Os juros compostos são considerados a 8ª maravilha do mundo: Multiplicando o seu dinheiro ao longo do tempo!"
       }
     ]
+  },
+  {
+    "id": "quiz_1792719495078",
+    "title": "Educação Financeira",
+    "questions": [
+      {
+        "text": "Quem é um agente superavitário?",
+        "options": [
+          "Pessoas que gastam mais do que ganham.",
+          "Pessoas que procuram um empréstimo.",
+          "Quem possua uma renda maior que suas despesas.",
+          "Pessoas que estão endividadas."
+        ],
+        "correct": 2,
+        "time": 30,
+        "explanation": "Um agente superavitário tem recursos disponíveis para poupar ou investir. Já um agente deficitário precisa de recursos para cobrir suas necessidades ou financiar seus planos.",
+        "waitingTip": "Investir não é fazer uma aposta, é participar do crescimento de boas empresas e do país a longo prazo."
+      },
+      {
+        "text": "Qual é o papel do sistema financeiro?",
+        "options": [
+          "Conectar quem tem e quem precisa de dinheiro.",
+          "Controlar todos os preços.",
+          "Impedir empréstimos.",
+          "Garantir lucro nos investimentos."
+        ],
+        "correct": 0,
+        "time": 30,
+        "explanation": "O sistema financeiro facilita a circulação de recursos entre quem tem dinheiro disponível e quem precisa dele. Bancos, corretoras e o mercado de capitais participam desse processo de maneiras diferentes.",
+        "waitingTip": "A regra básica da diversificação: Nunca coloque todos os ativos na mesma \"cesta\" de investimentos."
+      },
+      {
+        "text": "O que é o famoso “spread bancário”?",
+        "options": [
+          "Diferença entre a taxa que o banco cobra ao emprestar e a taxa que paga ao captar dinheiro.",
+          "É um imposto sobre investimentos.",
+          "Lucro garantido pelo setor bancário ao investidor.",
+          "Taxa definida pela bolsa de valores de Nova Iorque."
+        ],
+        "correct": 0,
+        "time": 30,
+        "explanation": "O banco pode pagar uma taxa a quem deixa dinheiro aplicado e cobrar outra, maior, de quem toma crédito. A diferença é o spread bancário. Ela ajuda a cobrir custos e perdas com inadimplência, além de contribuir para o resultado do banco; não é lucro líquido integral.",
+        "waitingTip": "Conhecimento é o ativo mais valioso: Quem estuda o mercado toma decisões muito mais seguras!"
+      },
+      {
+        "text": "Por que uma pessoa pode cobrar juros ao emprestar dinheiro?",
+        "options": [
+          "Porque investir sempre dá lucro.",
+          "Porque todo dinheiro perde valor imediatamente.",
+          "Porque os bancos podem criar taxas sem motivo.",
+          "Porque emprestar envolve tempo, risco e abrir mão de usar o dinheiro agora."
+        ],
+        "correct": 3,
+        "time": 30,
+        "explanation": "Quem empresta abre mão de usar o dinheiro no presente, pode correr o risco de não receber de volta e deixa de aproveitar outras oportunidades. Os juros podem compensar esses fatores e a perda de poder de compra causada pela inflação.",
+        "waitingTip": "Renda fixa traz segurança e liquidez, enquanto renda variável busca potencial de retorno no futuro."
+      },
+      {
+        "text": "Você vai usar seu dinheiro daqui a três meses. O que deve considerar ao investir?",
+        "options": [
+          "O investimento que mais oscila, para buscar o maior rendimento possível.",
+          "O investimento que o meu influencer favorito está recomendando.",
+          "O prazo, a liquidez e o risco do investimento.",
+          "Apenas o maior rendimento, para buscar o maior rendimento possível."
+        ],
+        "correct": 2,
+        "time": 30,
+        "explanation": "Se o dinheiro será necessário em pouco tempo, não basta procurar a maior rentabilidade. É importante conseguir resgatá-lo no momento necessário e entender os riscos de perder dinheiro ou ter dificuldades para acessar os recursos.",
+        "waitingTip": "Deixar dinheiro parado na conta corrente é deixar de ganhar dinheiro todo os meses."
+      },
+      {
+        "text": "O que acontece nos juros compostos?",
+        "options": [
+          "Os juros também passam a render juros.",
+          "O dinheiro rende apenas no primeiro ano.",
+          "O rendimento é sempre igual a zero.",
+          "O investidor recebe sempre o mesmo valor."
+        ],
+        "correct": 0,
+        "time": 30,
+        "explanation": "Nos juros compostos, os rendimentos são incorporados ao saldo e também passam a render. Por isso, mantendo-se a mesma taxa, o crescimento pode acelerar ao longo do tempo. Isso também acontece com as dívidas: os juros podem incidir sobre valores já acrescidos de juros e encargos.",
+        "waitingTip": "No mercado financeiro, maior rentabilidade sempre traz um risco maior, tome cuidado com promessas de dinheiro fácil e rápido."
+      },
+      {
+        "text": "Como o dinheiro investido pode contribuir para a economia?",
+        "options": [
+          "Ficando parado na economia, assim as pessoas compram mais.",
+          "Gerando um lucro garantido para os investidores.",
+          "Não contribui, pois o dinheiro volta para você.",
+          "Pode financiar pessoas e empresas, assim ajudando a financiar atividades econômicas."
+        ],
+        "correct": 3,
+        "time": 30,
+        "explanation": "Dependendo do investimento, os recursos podem ajudar bancos a conceder crédito, empresas a captar dinheiro ou o governo a financiar suas atividades. O investimento não garante lucro, e os riscos variam conforme o produto.",
+        "waitingTip": "O tempo é o melhor amigo de todo investidor: começar cedo com pouco vale mais do que começar tarde e com muito."
+      },
+      {
+        "text": "O que significa a diversificação de investimentos?",
+        "options": [
+          "Investir todo o dinheiro em uma empresa.",
+          "Distribuir o dinheiro entre diferentes investimentos.",
+          "Escolher os investimentos mais famosos atualmente.",
+          "Trocar de investimento todos os dias."
+        ],
+        "correct": 1,
+        "time": 30,
+        "explanation": "Diversificar é distribuir recursos entre investimentos diferentes para não depender tanto do desempenho de apenas um. Isso pode ajudar a administrar riscos, mas não elimina a possibilidade de perdas.",
+        "waitingTip": "Pequenos cortes em gastos desnecessários hoje podem se transformar em um grande patrimônio amanhã."
+      },
+      {
+        "text": "O que pode acontecer ao deixar a fatura do cartão no rotativo?",
+        "options": [
+          "A dívida desaparece no mês seguinte, pois rotacionou.",
+          "O banco devolve parte da compra, para te aliviar dos juros.",
+          "A dívida tende a crescer por conta dos juros.",
+          "O limite aumenta automaticamente, liberando mais valor para você gastar."
+        ],
+        "correct": 2,
+        "time": 30,
+        "explanation": "Quando uma pessoa não paga integralmente a fatura e entra no crédito rotativo, podem incidir juros e encargos, aumentando a dívida. Por isso, é importante entender o custo do crédito e evitar comprometer o orçamento com dívidas caras.",
+        "waitingTip": "A reserva de emergência é o seu escudo financeiro, deve cobrir de 6 a 12 meses das suas despesas fixas."
+      },
+      {
+        "text": "Você investiu R$ 1.000 a uma taxa de 10% ao ano, com os juros simples. Quanto terá ao final de três anos, sem considerar impostos ou taxas?",
+        "options": [
+          "R$ 1.331.",
+          "R$ 1.100.",
+          "R$ 1.300.",
+          "R$ 1.200."
+        ],
+        "correct": 2,
+        "time": 30,
+        "explanation": "No primeiro ano, o saldo passa a R$ 1.100; no segundo, os 10% incidem apenas sobre os R$ 1.000, chegando a R$ 1.200; no terceiro, os juros ainda incidem sobre R$ 1.000, totalizando R$ 1.300. Esse é o efeito dos juros simples.",
+        "waitingTip": "Os juros compostos são considerados a 8ª maravilha do mundo: Multiplicando o seu dinheiro ao longo do tempo!"
+      }
+    ],
+    "savedCheckpoint": [
+      {
+        "text": "Quem é um agente superavitário?",
+        "options": [
+          "Pessoas que gastam mais do que ganham.",
+          "Pessoas que procuram um empréstimo.",
+          "Quem possua uma renda maior que suas despesas.",
+          "Pessoas que estão endividadas."
+        ],
+        "correct": 2,
+        "time": 30,
+        "explanation": "Um agente superavitário tem recursos disponíveis para poupar ou investir. Já um agente deficitário precisa de recursos para cobrir suas necessidades ou financiar seus planos.",
+        "waitingTip": "Investir não é fazer uma aposta, é participar do crescimento de boas empresas e do país a longo prazo."
+      },
+      {
+        "text": "Qual é o papel do sistema financeiro?",
+        "options": [
+          "Conectar quem tem e quem precisa de dinheiro.",
+          "Controlar todos os preços.",
+          "Impedir empréstimos.",
+          "Garantir lucro nos investimentos."
+        ],
+        "correct": 0,
+        "time": 30,
+        "explanation": "O sistema financeiro facilita a circulação de recursos entre quem tem dinheiro disponível e quem precisa dele. Bancos, corretoras e o mercado de capitais participam desse processo de maneiras diferentes.",
+        "waitingTip": "A regra básica da diversificação: Nunca coloque todos os ativos na mesma \"cesta\" de investimentos."
+      },
+      {
+        "text": "O que é o famoso “spread bancário”?",
+        "options": [
+          "Diferença entre a taxa que o banco cobra ao emprestar e a taxa que paga ao captar dinheiro.",
+          "É um imposto sobre investimentos.",
+          "Lucro garantido pelo setor bancário ao investidor.",
+          "Taxa definida pela bolsa de valores de Nova Iorque."
+        ],
+        "correct": 0,
+        "time": 30,
+        "explanation": "O banco pode pagar uma taxa a quem deixa dinheiro aplicado e cobrar outra, maior, de quem toma crédito. A diferença é o spread bancário. Ela ajuda a cobrir custos e perdas com inadimplência, além de contribuir para o resultado do banco; não é lucro líquido integral.",
+        "waitingTip": "Conhecimento é o ativo mais valioso: Quem estuda o mercado toma decisões muito mais seguras!"
+      },
+      {
+        "text": "Por que uma pessoa pode cobrar juros ao emprestar dinheiro?",
+        "options": [
+          "Porque investir sempre dá lucro.",
+          "Porque todo dinheiro perde valor imediatamente.",
+          "Porque os bancos podem criar taxas sem motivo.",
+          "Porque emprestar envolve tempo, risco e abrir mão de usar o dinheiro agora."
+        ],
+        "correct": 3,
+        "time": 30,
+        "explanation": "Quem empresta abre mão de usar o dinheiro no presente, pode correr o risco de não receber de volta e deixa de aproveitar outras oportunidades. Os juros podem compensar esses fatores e a perda de poder de compra causada pela inflação.",
+        "waitingTip": "Renda fixa traz segurança e liquidez, enquanto renda variável busca potencial de retorno no futuro."
+      },
+      {
+        "text": "Você vai usar seu dinheiro daqui a três meses. O que deve considerar ao investir?",
+        "options": [
+          "O investimento que mais oscila, para buscar o maior rendimento possível.",
+          "O investimento que o meu influencer favorito está recomendando.",
+          "O prazo, a liquidez e o risco do investimento.",
+          "Apenas o maior rendimento, para buscar o maior rendimento possível."
+        ],
+        "correct": 2,
+        "time": 30,
+        "explanation": "Se o dinheiro será necessário em pouco tempo, não basta procurar a maior rentabilidade. É importante conseguir resgatá-lo no momento necessário e entender os riscos de perder dinheiro ou ter dificuldades para acessar os recursos.",
+        "waitingTip": "Deixar dinheiro parado na conta corrente é deixar de ganhar dinheiro todo os meses."
+      },
+      {
+        "text": "O que acontece nos juros compostos?",
+        "options": [
+          "Os juros também passam a render juros.",
+          "O dinheiro rende apenas no primeiro ano.",
+          "O rendimento é sempre igual a zero.",
+          "O investidor recebe sempre o mesmo valor."
+        ],
+        "correct": 0,
+        "time": 30,
+        "explanation": "Nos juros compostos, os rendimentos são incorporados ao saldo e também passam a render. Por isso, mantendo-se a mesma taxa, o crescimento pode acelerar ao longo do tempo. Isso também acontece com as dívidas: os juros podem incidir sobre valores já acrescidos de juros e encargos.",
+        "waitingTip": "No mercado financeiro, maior rentabilidade sempre traz um risco maior, tome cuidado com promessas de dinheiro fácil e rápido."
+      },
+      {
+        "text": "Como o dinheiro investido pode contribuir para a economia?",
+        "options": [
+          "Ficando parado na economia, assim as pessoas compram mais.",
+          "Gerando um lucro garantido para os investidores.",
+          "Não contribui, pois o dinheiro volta para você.",
+          "Pode financiar pessoas e empresas, assim ajudando a financiar atividades econômicas."
+        ],
+        "correct": 3,
+        "time": 30,
+        "explanation": "Dependendo do investimento, os recursos podem ajudar bancos a conceder crédito, empresas a captar dinheiro ou o governo a financiar suas atividades. O investimento não garante lucro, e os riscos variam conforme o produto.",
+        "waitingTip": "O tempo é o melhor amigo de todo investidor: começar cedo com pouco vale mais do que começar tarde e com muito."
+      },
+      {
+        "text": "O que significa a diversificação de investimentos?",
+        "options": [
+          "Investir todo o dinheiro em uma empresa.",
+          "Distribuir o dinheiro entre diferentes investimentos.",
+          "Escolher os investimentos mais famosos atualmente.",
+          "Trocar de investimento todos os dias."
+        ],
+        "correct": 1,
+        "time": 30,
+        "explanation": "Diversificar é distribuir recursos entre investimentos diferentes para não depender tanto do desempenho de apenas um. Isso pode ajudar a administrar riscos, mas não elimina a possibilidade de perdas.",
+        "waitingTip": "Pequenos cortes em gastos desnecessários hoje podem se transformar em um grande patrimônio amanhã."
+      },
+      {
+        "text": "O que pode acontecer ao deixar a fatura do cartão no rotativo?",
+        "options": [
+          "A dívida desaparece no mês seguinte, pois rotacionou.",
+          "O banco devolve parte da compra, para te aliviar dos juros.",
+          "A dívida tende a crescer por conta dos juros.",
+          "O limite aumenta automaticamente, liberando mais valor para você gastar."
+        ],
+        "correct": 2,
+        "time": 30,
+        "explanation": "Quando uma pessoa não paga integralmente a fatura e entra no crédito rotativo, podem incidir juros e encargos, aumentando a dívida. Por isso, é importante entender o custo do crédito e evitar comprometer o orçamento com dívidas caras.",
+        "waitingTip": "A reserva de emergência é o seu escudo financeiro, deve cobrir de 6 a 12 meses das suas despesas fixas."
+      },
+      {
+        "text": "Você investiu R$ 1.000 a uma taxa de 10% ao ano, com os juros simples. Quanto terá ao final de três anos, sem considerar impostos ou taxas?",
+        "options": [
+          "R$ 1.331.",
+          "R$ 1.100.",
+          "R$ 1.300.",
+          "R$ 1.200."
+        ],
+        "correct": 2,
+        "time": 30,
+        "explanation": "No primeiro ano, o saldo passa a R$ 1.100; no segundo, os 10% incidem apenas sobre os R$ 1.000, chegando a R$ 1.200; no terceiro, os juros ainda incidem sobre R$ 1.000, totalizando R$ 1.300. Esse é o efeito dos juros simples.",
+        "waitingTip": "Os juros compostos são considerados a 8ª maravilha do mundo: Multiplicando o seu dinheiro ao longo do tempo!"
+      }
+    ]
   }
 ]
